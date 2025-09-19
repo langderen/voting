@@ -9,7 +9,7 @@
 
             <div class="assignment-grid">
                 <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
+                 <RouterLink to="/vote" class="assignment-card-link"  >
                   <div class="assignment-card">
 
                       <div class="assignment-info">
@@ -26,7 +26,7 @@
                           <p>第三名：小小deai</p>
                       </div>
                     </div>
-                  </a>
+                  </RouterLink>
 
 
               </div>

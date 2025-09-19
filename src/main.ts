@@ -13,6 +13,7 @@ import Voted from './pages/voted.vue'
 import ContractUs from './pages/ContractUs.vue'
 import Login from './pages/login.vue'
 import register from './pages/register.vue'
+import Vote from './pages/vote.vue'
 //定义路由
 const routes = [
   {path:"/",redirect:"/home"},
@@ -20,7 +21,8 @@ const routes = [
   {path:"/voted",component:Voted},
   {path:"/contractus",component:ContractUs},
   {path:"/login",component:Login},
-  {path:"/register",component:register}
+  {path:"/register",component:register},
+  {path:"/vote",component:Vote},
 ]
 
 //创建路由

@@ -12,7 +12,7 @@
 
             <div class="assignment-grid">
                 <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
+                 <RouterLink to="/vote" class="assignment-card-link"  >
                   <div class="assignment-card">
 
                       <div class="assignment-info">
@@ -22,16 +22,17 @@
                               <span>发布者：班长</span>
                           </div>
                           <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
+                              <span class="assignment-tag tag-voted">已结束</span>
                           </div>
-                          <p>包括了每次计组课的作业</p>
+                          <p>第一名：deai</p>
+                          <p>第二名：小deai</p>
+                          <p>第三名：小小deai</p>
                       </div>
                     </div>
-                  </a>
+                  </RouterLink>
 
-                  <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
+                <!-- 作业卡片1 -->
+                 <RouterLink to="/vote" class="assignment-card-link"  >
                   <div class="assignment-card">
 
                       <div class="assignment-info">
@@ -41,127 +42,15 @@
                               <span>发布者：班长</span>
                           </div>
                           <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
+                              <span class="assignment-tag tag-voted">已结束</span>
                           </div>
-                          <p>包括了每次计组课的作业</p>
+                          <p>第一名：deai</p>
+                          <p>第二名：小deai</p>
+                          <p>第三名：小小deai</p>
                       </div>
                     </div>
-                  </a>
+                  </RouterLink>
 
-                  <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
-                          </div>
-                          <p>包括了每次计组课的作业</p>
-                      </div>
-                    </div>
-                  </a>
-
-                  <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
-                          </div>
-                          <p>包括了每次计组课的作业</p>
-                      </div>
-                    </div>
-                  </a>
-
-                  <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
-                          </div>
-                          <p>包括了每次计组课的作业</p>
-                      </div>
-                    </div>
-                  </a>
-
-                  <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
-                          </div>
-                          <p>包括了每次计组课的作业</p>
-                      </div>
-                    </div>
-                  </a>
-
-                  <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
-                          </div>
-                          <p>包括了每次计组课的作业</p>
-                      </div>
-                    </div>
-                  </a>
-
-                  <!-- 作业卡片1 -->
-                 <a class="assignment-card-link" href="www.baidu.com">
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-progress">进行中</span>
-                              <span class="assignment-tag">C++</span>
-                          </div>
-                          <p>包括了每次计组课的作业</p>
-                      </div>
-                    </div>
-                  </a>
               </div>
         </div>
       </section>
