@@ -234,6 +234,19 @@
           margin-bottom: 20px;
         }
 
+
+        /*登陆头像*/
+        .demo-type {
+          display: flex;
+        }
+        .demo-type > div {
+          flex: 1;
+          text-align: center;
+        }
+
+        .demo-type > div:not(:last-child) {
+          border-right: 1px solid var(--el-border-color);
+        }
         /* 作业分类展示区 */
         .assignment-hero {
             padding: 60px 0;

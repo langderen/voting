@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <div class="vote-page">
-
+      <h2>项目编号：{{ query.id }}</h2>
       <div class="section-title">
+
         <h2>23软工之星</h2>
         <p>为23软件工程选择你最喜欢的人物</p>
       </div>
@@ -18,7 +19,16 @@
 
 
 <script setup lang="ts">
+import { toRef } from 'vue';
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+//路由传参
+const route=useRoute();
+
+//传参解析
+const query=toRef(route,'query');
+
 
 const who = ref('0');
 const submit = () => {

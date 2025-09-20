@@ -9,7 +9,7 @@
 
             <div class="assignment-grid">
                 <!-- 作业卡片1 -->
-                 <RouterLink to="/vote" class="assignment-card-link"  >
+                 <RouterLink to="/vote?id=-1" class="assignment-card-link"  >
                   <div class="assignment-card">
 
                       <div class="assignment-info">
@@ -24,6 +24,7 @@
                           <p>第一名：deai</p>
                           <p>第二名：小deai</p>
                           <p>第三名：小小deai</p>
+
                       </div>
                     </div>
                   </RouterLink>
@@ -34,3 +35,4 @@
       </section>
     </div>
 </template>
+

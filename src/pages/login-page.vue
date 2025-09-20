@@ -33,9 +33,9 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { userStore } from '@/stores/user';
 const router = useRouter()
-
+const user=userStore();
 // 表单数据
 const loginForm = reactive({
     username: '',
@@ -73,14 +73,18 @@ const handleLogin = async () => {
         // 实际的登录API调用
         console.log('登录请求:', { username: safeUsername, password: safePassword })
 
-        // 模拟登录成功并设置cookie，设置过期时间为1小时
+        // 模拟登录成功并设置cookie，设置过期时间为1小时w
         const expires = new Date(Date.now() + 3600 * 1000).toUTCString()
         document.cookie = `authToken=yourAuthToken; path=/; expires=${expires}`
 
         // 跳转到主页
         router.push('/home')
+        user.ChangeUserName(loginForm.username);
+        user.isFinited=true;
+        console.log(user.username);
     } catch (error) {
         errorMessage('登录失败，请稍后重试');
+        alert("账号或密码输入错误")
     }
 }
 
