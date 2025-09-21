@@ -15,10 +15,9 @@ export const userStore = defineStore('userStore',{
   },
   state(){
     return {
-      username:"wy666", //用户名
-      isFinited:true //是否登录
+      username:"", //用户名
+      isFinited:false //是否登录
 
     }
   }
-
 })

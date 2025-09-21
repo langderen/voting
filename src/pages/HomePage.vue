@@ -10,7 +10,8 @@
                 <p>选择你感兴趣的内容并为其投票</p>
             </div>
 
-            <div class="assignment-grid">
+            <div >
+              <ul v-infinite-scroll="load" class="assignment-grid" style="overflow: auto">
                 <!-- 作业卡片1 -->
                  <RouterLink to="/vote?id=1" class="assignment-card-link"  >
                   <div class="assignment-card">
@@ -22,7 +23,7 @@
                               <span>发布者：班长</span>
                           </div>
                           <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
+                              <span class="assignment-tag tag-voting">进行中</span>
                           </div>
                           <p>第一名：deai</p>
                           <p>第二名：小deai</p>
@@ -31,236 +32,8 @@
                     </div>
                   </RouterLink>
 
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
 
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-
-                                  <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=2" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
-                          </div>
-                          <div>
-                              <span class="assignment-tag tag-voted">已结束</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-
+                </ul>
               </div>
         </div>
       </section>
@@ -268,5 +41,14 @@
 
   <el-backtop :right="100" :bottom="100" style="color: #4a6bff"/>
 
+
 </template>
 
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+const load = () => {
+  count.value += 2
+}
+</script>

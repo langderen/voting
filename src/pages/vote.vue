@@ -11,8 +11,11 @@
       <input type="radio" value="0" v-model="who">deai
       <input type="radio" value="1" v-model="who">小deai
       <input type="radio" value="2" v-model="who">小小deai
-      <button @click="submit">提交</button>
 
+      <button @click="submit" v-bind="{ disabled: proxy.$cookies.isKey(id) }">
+        <span v-if="!proxy.$cookies.isKey(id)">提交</span>
+        <span v-else>已投票</span>
+      </button>
     </div>
   </div>
 </template>
@@ -22,17 +25,23 @@
 import { toRef } from 'vue';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import {getCurrentInstance} from 'vue'
+import { lo } from 'element-plus/es/locales.mjs';
+
+const {proxy} = getCurrentInstance()
 
 //路由传参
 const route=useRoute();
 
 //传参解析
 const query=toRef(route,'query');
-
+const id=toRef(query.value,'id');
 
 const who = ref('0');
 const submit = () => {
-  alert(`你投给了${who.value}`);
+  proxy.$cookies.set(id.value, who.value, '1y');
+  location.reload();
 };
+
 </script>
 

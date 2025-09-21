@@ -41,13 +41,27 @@
 
 <script setup lang="ts">
 import { userStore } from '@/stores/user';
+import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElAvatar } from 'element-plus';
 import { storeToRefs } from 'pinia';
+import {getCurrentInstance} from 'vue'
+
+const {proxy} = getCurrentInstance()
 const user=userStore();
 //console.log(user.username);
 const userInfo=storeToRefs (user);
+if(proxy.$cookies.isKey('username')){
+  userInfo.isFinited.value=true;
+  userInfo.username.value=proxy.$cookies.get('username');
+}else{
+  userInfo.isFinited.value=false;
+  userInfo.username.value="";
+}
+
 function logout(){
   userInfo.isFinited.value=false;
   userInfo.username.value="";
+  proxy.$cookies.remove('username');
+  location.reload();
 }
 
 </script>
