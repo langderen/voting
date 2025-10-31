@@ -1,0 +1,418 @@
+@import './base.css';
+
+
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #6c757d;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 导航栏 */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+            .nav-links li {
+                margin-left: 30px;
+            }
+
+            .nav-links a {
+                text-decoration: none;
+                color: var(--dark-color);
+                font-weight: 500;
+                transition: color 0.3s;
+            }
+
+                .nav-links a:hover {
+                    color: var(--primary-color);
+                }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+            .btn:hover {
+                background-color: #3a5bef;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+        .submit-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+            .submit-btn:hover {
+                background-color: #3a5bef;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            nav {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                margin-top: 20px;
+            }
+
+                .nav-links li {
+                    margin: 0 10px;
+                }
+        }
+
+
+                /* 联系表单 */
+        .contact {
+            padding: 80px 0;
+            background-color: #f5f7fa;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 500;
+            }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+            .section-title h2 {
+                font-size: 36px;
+                color: var(--dark-color);
+                margin-bottom: 15px;
+            }
+
+            .section-title p {
+                color: var(--secondary-color);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+
+/* 登录表单 */
+        .floating {
+            padding: 80px 0;
+            background-color: #f5f7fa;
+        }
+
+        .floating-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+            .input-group label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 500;
+            }
+
+        .input-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+
+        .error-message {
+          color: #f56c6c;
+          font-size: 14px;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+
+        /*登陆头像*/
+        .demo-type {
+          display: flex;
+        }
+        .demo-type > div {
+          flex: 1;
+          text-align: center;
+        }
+
+        .demo-type > div:not(:last-child) {
+          border-right: 1px solid var(--el-border-color);
+        }
+        /* 作业分类展示区 */
+        .assignment-hero {
+            padding: 60px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
+
+            .assignment-hero h1 {
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+                color: var(--dark-color);
+            }
+
+            .assignment-hero p {
+                font-size: 1.2rem;
+                color: var(--secondary-color);
+                max-width: 700px;
+                margin: 0 auto 30px;
+            }
+
+        /* 分类筛选 */
+        .filter-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 40px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 8px 20px;
+            background-color: var(--light-color);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+            .filter-btn:hover, .filter-btn.active {
+                background-color: var(--primary-color);
+                color: white;
+            }
+
+        /* 作业分类展示 */
+        .assignment-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+        .assignments {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+            .section-title h2 {
+                font-size: 2rem;
+                color: var(--dark-color);
+                margin-bottom: 15px;
+            }
+
+            .section-title p {
+                color: var(--secondary-color);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+        .assignment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .assignment-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+            .assignment-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            }
+
+        .assignment-image {
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+        }
+
+        .assignment-info {
+            padding: 25px;
+        }
+
+            .assignment-info h3 {
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+                color: var(--dark-color);
+            }
+
+        .assignment-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .assignment-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            background-color: var(--light-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .tag-voting {
+            background-color: #e3f2fd;
+            color: #5a78ff;
+        }
+
+        .tag-voted {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+
+        .tag-science {
+            background-color: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .tag-language {
+            background-color: #f3e5f5;
+            color: #8e24aa;
+        }
+.infinite-list {
+  height: 300px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.infinite-list .infinite-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  background: var(--el-color-primary-light-9);
+  margin: 10px;
+  color: var(--el-color-primary);
+}
+.infinite-list .infinite-list-item + .list-item {
+  margin-top: 10px;
+}
