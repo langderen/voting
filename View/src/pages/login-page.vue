@@ -8,17 +8,18 @@
               <form @submit.prevent="handleLogin" class="floating-form">
                 <div class="input-group">
                     <label for="username">用户名</label>
-                    <input id="username" v-model.trim="loginForm.username" type="text" autocomplete="off" @input="validateInput" required class="input-control" placeholder="请填写手机号、邮箱或用户名"/>
+                    <input type="text" id="username" v-model="username" required maxlength="20" class="input-control" placeholder="请填写用户名"/>
                     <span class="highlight"></span>
                 </div>
                 <div class="input-group">
-                    <label for="password">密码</label>
-                    <input id="password" v-model.trim="loginForm.password" type="password" autocomplete="off" @input="validateInput" required class="input-control" placeholder="请填写密码" />
+                      <label for="password">密码</label>
+                    <input type="password" id="password" v-model="password" required minlength="6" maxlength="20" class="input-control" placeholder="请填写您的密码"/>
                     <span class="highlight"></span>
                 </div>
-                <div class="error-message" v-if="errorMsg">{{ errorMsg }}</div>
-                <button type="submit" class="submit-btn"  :disabled="!isFormValid">
+
+                <button type="submit" class="submit-btn" >
                     <span>登录</span>
+                    <Vcode :show="isShow" @success="onSuccess" @close="onClose" />
                     <i class="arrow-icon"></i>
                 </button>
                 <div class="form-footer">
@@ -27,78 +28,101 @@
                 </div>
             </form>
         </section>
+
     </div>
+ <!-- 提示框 -->
+      <div v-if="toast.show" :class="['toast', toast.type === 'success' ? 'toast-success' : 'toast-error']">{{ toast.message }}</div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
+import axios from 'axios';
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { userStore } from '@/stores/user'
+// 验证码组件，爆红也没事
+import Vcode from "vue3-puzzle-vcode";
+
 import {getCurrentInstance} from 'vue'
+import { userStore } from '@/stores/user';
 
 const {proxy} = getCurrentInstance()
 const router = useRouter()
+const username = ref('')
+const password = ref('')
 const user=userStore();
-// 表单数据
-const loginForm = reactive({
-    username: '',
-    password: ''
-})
+const toast = ref({ show: false, message: '', type: 'success' });
 
-const errorMsg = ref('')
-const isFormValid = ref(false)
-
-// 输入验证
-const validateInput = () => {
-    // 基本验证
-    if (loginForm.username && loginForm.password) {
-        isFormValid.value = true
-        errorMsg.value = ''
-    } else {
-        isFormValid.value = false
-    }
+const showToast = (message: string, type = 'success') => {
+  toast.value.message = message;
+  toast.value.type = type;
+  toast.value.show = true;
+  setTimeout(() => (toast.value.show = false), 5000);
 }
 
 // 登录处理
 const handleLogin = async () => {
     // 防止XSS攻击
     const xssPattern = /(~|\{|\}|"|'|<|>|\?)/g
-    if (xssPattern.test(loginForm.username) || xssPattern.test(loginForm.password)) {
-        errorMessage('警告:输入内容包含非法字符');
+if (!username.value && !password.value) {
+      showToast('请填写用户名和密码', 'error');
+      return;
+    } else if (xssPattern.test(username.value) || xssPattern.test(password.value)) {
+        showToast('警告:输入内容包含非法字符', 'error');
         return
+    }else {
+        // 触发验证码弹窗，实际登录在 onSuccess 中执行
+        onShow();
     }
 
-    try {
+}
+
+ const isShow = ref(false);
+
+  const onShow = () => {
+    isShow.value = true;
+
+  };
+
+  const onClose = () => {
+    isShow.value = false;
+  };
+
+  const onSuccess = () => {
+    onClose(); // 验证成功，需要手动关闭模态框
+    // 执行注册并反馈
         // 对输入进行转义处理
-        const safeUsername = encodeURIComponent(loginForm.username)
-        const safePassword = encodeURIComponent(loginForm.password)
+        const safeUsername = encodeURIComponent(username.value)
+        const safePassword = encodeURIComponent(password.value)
 
-        // 实际的登录API调用
-        console.log('登录请求:', { username: safeUsername, password: safePassword })
-        // 模拟登录成功并设置cookie，设置过期时间为1小时
-        proxy.$cookies.set('username', loginForm.username, '1h');
-        // 跳转到主页
-        router.push('/home')
-        user.ChangeUserName(loginForm.username);
-        user.isFinited=true;
+        try {
+            login(safeUsername,safePassword).then((res) => {
+              console.log(res);
+              if (res.code == "200" ) {
+                  // 设置cookie
+                  proxy.$cookies.set('Authorization', res.data.tokenValue);
+                  // 更新用户状态
+                  user.userId=res.data.loginId;
+                  user.isFinited = true;
 
+                  // 跳转到主页
+                  alert('登录成功，欢迎用户：'+res.data.loginId);
+                  router.push('/');
+              } else{
+                  showToast('登录失败，用户名或密码错误', 'error');
+              }
+        });
+        } catch {
+            showToast('用户不存在，登录失败', 'error');
+            return;
+        }
+  };
 
-    } catch (error) {
-        errorMessage('登录失败，请稍后重试');
-        //alert("账号或密码输入错误")
-    }
+// LOGIN API 调用
+async function login(userName :string,pwd:string) {
+  const res=await axios({
+    url: 'https://frp-six.com:11086/api/login/doLogin?name='+userName+"&pwd="+pwd,
+    method: 'GET',
+  })
+  return res.data;
 }
-
-// 错误提示
-const errorMessage = (text) => {
-    errorMsg.value = text
-    setTimeout(() => {
-        errorMsg.value = ''
-    }, 3000)
-}
-
-onMounted(() => {
-    validateInput()
-})
-
+// api无法调用时也没有反应
 </script>

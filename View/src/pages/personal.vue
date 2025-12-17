@@ -25,60 +25,7 @@
               <p class="text-sm text-gray-500 mt-1">{{ userInfo.email }}</p>
             </div>
 
-            <!-- 导航菜单 -->
-            <nav class="space-y-1">
-              <a
-                href="#"
-                class="nav-item"
-                :class="{ active: activeNav === 'profile' }"
-                @click.prevent="activeNav = 'profile'"
-              >
-                <i class="fa fa-user-circle w-5 text-center mr-3"></i>
-                <span>个人资料</span>
-              </a>
-              <a
-                href="#"
-                class="nav-item"
-                :class="{ active: activeNav === 'myVotes' }"
-                @click.prevent="activeNav = 'myVotes'"
-              >
-                <i class="fa fa-bar-chart w-5 text-center mr-3"></i>
-                <span>我的投票</span>
-                <span class="ml-auto bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full">{{ stats.createdVotes }}</span>
-              </a>
-              <a
-                href="#"
-                class="nav-item"
-                :class="{ active: activeNav === 'favorites' }"
-                @click.prevent="activeNav = 'favorites'"
-              >
-                <i class="fa fa-star-o w-5 text-center mr-3"></i>
-                <span>收藏的投票</span>
-                <span class="ml-auto bg-primary/10 text-primary text-xs px-2 py-0.5 rounded-full">3</span>
-              </a>
-              <a
-                href="#"
-                class="nav-item"
-                :class="{ active: activeNav === 'participations' }"
-                @click.prevent="activeNav = 'participations'"
-              >
-                <i class="fa fa-history w-5 text-center mr-3"></i>
-                <span>参与记录</span>
-              </a>
-              <a
-                href="#"
-                class="nav-item"
-                :class="{ active: activeNav === 'settings' }"
-                @click.prevent="activeNav = 'settings'"
-              >
-                <i class="fa fa-cog w-5 text-center mr-3"></i>
-                <span>账户设置</span>
-              </a>
-              <a href="#" class="nav-item text-danger hover:bg-danger/5 hover:text-danger" @click.prevent="handleLogout">
-                <i class="fa fa-sign-out w-5 text-center mr-3"></i>
-                <span>退出登录</span>
-              </a>
-            </nav>
+            <!-- (导航已移除：仅显示用户信息) -->
           </div>
         </div>
 
@@ -140,9 +87,6 @@
             </h2>
             <p class="text-sm text-gray-500">在个人中心快速开始一个新的投票，或打开完整的创建页面进行高级设置。</p>
             <div class="mt-4 flex items-center">
-              <button @click="goToNewPoll" class="py-2 px-4 bg-primary text-white rounded-lg shadow-md hover:bg-primary/90 transition-colors">
-                <i class="fa fa-pencil mr-2"></i> 创建投票
-              </button>
               <RouterLink to="/newpoll" class="ml-4 text-primary underline">打开完整创建页</RouterLink>
             </div>
           </div>
@@ -233,7 +177,7 @@
           </div>
 
           <!-- 最近活动 -->
-          <div class="bg-white rounded-xl p-6 card-shadow hover-lift">
+          <div class="bg-white rounded-xl p-6 card-shadow hover-lift" v-if="activeNav === 'profile'">
             <div class="flex justify-between items-center mb-6">
               <h2 class="text-lg font-semibold flex items-center">
                 <i class="fa fa-history text-primary mr-2"></i>
@@ -246,7 +190,7 @@
 
             <div class="space-y-5">
               <div class="flex" v-for="(activity, index) in recentActivities" :key="index">
-                <div class="shrink-0 w-10 h-10 rounded-full" :class="activity.bgClass">
+                <div class="flex-shrink-0 w-10 h-10 rounded-full" :class="activity.bgClass">
                   <div class="w-full h-full flex items-center justify-center" :class="activity.textClass">
                     <i :class="activity.icon"></i>
                   </div>
@@ -258,6 +202,86 @@
                   </p>
                   <p class="text-xs text-gray-500 mt-1">{{ activity.time }}</p>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 我的投票（独立视图） -->
+          <div v-if="activeNav === 'myVotes'" class="bg-white rounded-xl p-6 card-shadow hover-lift">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-lg font-semibold flex items-center">
+                <i class="fa fa-list text-primary mr-2"></i>
+                我的投票
+              </h2>
+              <div class="flex items-center space-x-3">
+                <input v-model="voteQuery" type="search" placeholder="搜索投票标题" class="px-3 py-1 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary" />
+                <span class="text-sm text-gray-500">共 {{ filteredVotes.length }} 项</span>
+              </div>
+            </div>
+
+            <div v-if="filteredVotes.length === 0" class="text-center py-12 text-gray-500">
+              暂无匹配的投票，尝试更改搜索关键词或创建一个新的投票。
+              <div class="mt-4">
+                <RouterLink to="/newpoll" class="px-4 py-2 bg-primary text-white rounded-lg">快速创建投票</RouterLink>
+              </div>
+            </div>
+
+            <div class="space-y-4" v-else>
+              <div
+                class="border border-gray-100 rounded-lg p-4 hover:border-primary/30 transition-colors"
+                v-for="vote  in pagedVotes"
+                :key="vote.id"
+              >
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-medium">{{ vote.title }}</h3>
+                    <p class="text-sm text-gray-500 mt-1">创建于 {{ vote.createdAt }}</p>
+                  </div>
+                  <span class="px-2 py-1" :class="vote.statusClass">{{ vote.status }}</span>
+                </div>
+
+                <div class="mt-3 flex items-center justify-between">
+                  <div class="flex items-center space-x-4">
+                    <span class="text-sm flex items-center">
+                      <i class="fa fa-user-o mr-1 text-gray-400"></i>
+                      <span>{{ vote.participants }}人参与</span>
+                    </span>
+                    <span class="text-sm flex items-center">
+                      <i class="fa fa-list-ul mr-1 text-gray-400"></i>
+                      <span>{{ vote.options }}个选项</span>
+                    </span>
+                  </div>
+
+                  <div class="flex space-x-2">
+                    <button
+                      class="text-sm text-gray-600 hover:text-primary transition-colors"
+                      v-if="vote.status === '进行中'"
+                      @click="handleEditVote(vote.id)"
+                    >
+                      <i class="fa fa-pencil mr-1"></i> 编辑
+                    </button>
+                    <button
+                      class="text-sm text-gray-600 hover:text-primary transition-colors"
+                      v-if="vote.status === '已结束'"
+                      @click="handleViewResults(vote.id)"
+                    >
+                      <i class="fa fa-bar-chart mr-1"></i> 结果
+                    </button>
+                    <button
+                      class="text-sm text-gray-600 hover:text-primary transition-colors"
+                      @click="handleViewVote(vote.id)"
+                    >
+                      <i class="fa fa-eye mr-1"></i> 查看
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 简单分页 -->
+              <div class="flex justify-end items-center space-x-3 pt-2">
+                <button class="px-3 py-1 border rounded" :disabled="votePage === 1" @click="votePage = Math.max(1, votePage - 1)">上一页</button>
+                <span class="text-sm text-gray-500">第 {{ votePage }} 页 / 共 {{ totalPages }} 页</span>
+                <button class="px-3 py-1 border rounded" :disabled="votePage >= totalPages" @click="votePage = Math.min(totalPages, votePage + 1)">下一页</button>
               </div>
             </div>
           </div>
@@ -330,8 +354,6 @@
       </div>
     </main>
 
-
-
     <!-- 保存成功提示 -->
     <div
       id="success-toast"
@@ -343,8 +365,11 @@
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+import { userStore } from '@/stores/user';
 
-<script lang="ts">
+// ====== 类型定义 ======
 interface UserInfo {
   avatar: string;
   fullname: string;
@@ -353,6 +378,7 @@ interface UserInfo {
   phone: string;
   bio: string;
 }
+
 interface Activity {
   action: string;
   target?: string;
@@ -361,6 +387,7 @@ interface Activity {
   bgClass?: string;
   textClass?: string;
 }
+
 interface VoteItem {
   id: number;
   title: string;
@@ -371,176 +398,121 @@ interface VoteItem {
   options?: number;
 }
 
-import { userStore } from '@/stores/user';
-export default {
-  name: 'PersonalPage',
-  data() {
-    return {
-      // 用户信息（已清空）
-      userInfo: {
-        avatar: '',
-        fullname: '',
-        username: '',
-        email: '',
-        phone: '',
-        bio: ''
-      },
-  // 原始用户信息，用于重置表单
-  originalUserInfo: {} as unknown as UserInfo,
+// ====== 响应式状态 ======
+const userInfo = ref<UserInfo>({
+  avatar: '',
+  fullname: '',
+  username: '',
+  email: '',
+  phone: '',
+  bio: ''
+});
 
-      // 统计数据（已清零）
-      stats: {
-        createdVotes: 0,
-        createdVotesGrowth: 0,
-        participatedVotes: 0,
-        participatedVotesGrowth: 0,
-        totalParticipants: 0,
-        totalParticipantsGrowth: 0
-      },
+const originalUserInfo = ref<UserInfo>({ ...userInfo.value });
 
-  // 最近活动（已清空）
-  recentActivities: [] as Activity[],
+const stats = ref({
+  createdVotes: 0,
+  createdVotesGrowth: 0,
+  participatedVotes: 0,
+  participatedVotesGrowth: 0,
+  totalParticipants: 0,
+  totalParticipantsGrowth: 0
+});
 
-  // 最近创建的投票（已清空）
-  recentVotes: [] as VoteItem[],
+const recentActivities = ref<Activity[]>([]);
+const recentVotes = ref<VoteItem[]>([]);
 
-      // 导航状态
-      activeNav: 'profile',
+const voteQuery = ref('');
+const votePage = ref(1);
+const votePageSize = ref(6);
 
-      // 滚动状态
-      isScrolled: false,
+const activeNav = ref('profile');
+const isScrolled = ref(false);
+const showSuccessToast = ref(false);
 
-      // 成功提示显示状态
-      showSuccessToast: false
-    };
-  },
-  mounted() {
-    // 保存原始用户信息
-    this.originalUserInfo = { ...this.userInfo };
+// ====== 计算属性 ======
+const filteredVotes = computed(() => {
+  const q = voteQuery.value.trim().toLowerCase();
+  if (!q) return recentVotes.value;
+  return recentVotes.value.filter(v => v.title.toLowerCase().includes(q));
+});
 
-    // 从 Pinia userStore 同步用户信息（若有）
-    try {
-      const store = userStore();
-      if (store && store.username) {
-        // 将 store 中的 username 用作 fullname 和 username 的回填
-        this.userInfo.fullname = store.username;
-        this.userInfo.username = store.username;
-      }
-    } catch {
-      // ignore if Pinia not initialized
-    }
+const totalPages = computed(() => {
+  return Math.max(1, Math.ceil(filteredVotes.value.length / votePageSize.value));
+});
 
-    // 监听滚动事件
-    window.addEventListener('scroll', this.handleScroll);
-  },
+const pagedVotes = computed(() => {
+  const start = (votePage.value - 1) * votePageSize.value;
+  return filteredVotes.value.slice(start, start + votePageSize.value);
+});
 
-  beforeUnmount() {
-    // 移除滚动监听
-    window.removeEventListener('scroll', this.handleScroll);
-  },
-
-  methods: {
-    // 处理滚动事件
-    handleScroll() {
-      this.isScrolled = window.scrollY > 10;
-    },
-
-    // 保存个人资料
-    saveProfile() {
-      // 模拟API请求
-      console.log('保存用户信息:', this.userInfo);
-
-      // 显示成功提示
-      this.showSuccessToast = true;
-
-      // 3秒后隐藏提示
-      setTimeout(() => {
-        this.showSuccessToast = false;
-      }, 3000);
-
-      // 更新原始数据
-      this.originalUserInfo = { ...this.userInfo };
-    },
-
-    // 重置表单
-    resetForm() {
-      this.userInfo = { ...this.originalUserInfo };
-    },
-
-    // 处理头像上传
-    handleAvatarUpload() {
-      // 实际项目中这里会触发文件选择对话框
-      alert('头像上传功能待实现');
-    },
-
-    // 处理退出登录
-    handleLogout() {
-      if (confirm('确定要退出登录吗？')) {
-        // 实际项目中这里会调用退出登录API
-        console.log('用户退出登录');
-      }
-    },
-
-    // 处理编辑投票
-  handleEditVote(voteId: number) {
-      console.log('编辑投票:', voteId);
-      // 实际项目中会跳转到编辑页面
-    },
-
-    // 处理查看投票结果
-  handleViewResults(voteId: number) {
-      console.log('查看投票结果:', voteId);
-      // 实际项目中会跳转到结果页面
-    },
-
-    // 处理查看投票
-  handleViewVote(voteId: number) {
-      console.log('查看投票:', voteId);
-      // 实际项目中会跳转到详情页面
-    }
-    ,
-    // 跳转到创建投票页面
-    goToNewPoll() {
-      // 使用 router 的命名路由跳转
-      // 尝试使用 Vue Router 的实例导航（Options API 中通过 this.$router 访问）
-      type RouterLike = { push: (arg: { name?: string; path?: string; query?: Record<string,string> }) => Promise<unknown> };
-      const router = (this as unknown as { $router?: RouterLike }).$router;
-      if (router && typeof router.push === 'function') {
-        router.push({ name: 'newpoll' }).catch(() => {});
-        return;
-      }
-      // 回退：直接改变 location
-      window.location.href = '/newpoll';
-    }
-  }
+// ====== 方法 ======
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 10;
 };
+
+const saveProfile = () => {
+  console.log('保存用户信息:', userInfo.value);
+  showSuccessToast.value = true;
+  setTimeout(() => {
+    showSuccessToast.value = false;
+  }, 3000);
+  originalUserInfo.value = { ...userInfo.value };
+
+  // 可选：同步回 Pinia store
+  const store = userStore();
+  store.userId = userInfo.value.username;
+  store.userName = userInfo.value.fullname;
+  store.userEmail = userInfo.value.email;
+  // ...其他字段
+};
+
+const resetForm = () => {
+  userInfo.value = { ...originalUserInfo.value };
+};
+
+const handleAvatarUpload = () => {
+  alert('头像上传功能待实现');
+};
+
+
+const handleEditVote = (voteId: number) => {
+  console.log('编辑投票:', voteId);
+};
+
+const handleViewResults = (voteId: number) => {
+  console.log('查看投票结果:', voteId);
+};
+
+const handleViewVote = (voteId: number) => {
+  console.log('查看投票:', voteId);
+};
+
+// ====== 生命周期 ======
+onMounted(() => {
+  const user = userStore();
+
+  // 初始化用户信息
+  userInfo.value = {
+    avatar: user.AvatarUrl || '',
+    fullname: user.userName || user.userId || '',
+    username: user.userId || '',
+    email: user.userEmail || '',
+    phone:'',
+    bio:''
+  };
+  originalUserInfo.value = { ...userInfo.value };
+
+  // 监听滚动
+  window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <style scoped lang="postcss">
-@layer utilities {
-  .content-auto {
-    content-visibility: auto;
-  }
-  .card-shadow {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  }
-  .hover-lift {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .hover-lift:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-  }
-  .stat-card {
-    @apply bg-white rounded-xl p-5 card-shadow hover-lift transition-all;
-  }
-  .nav-item {
-    @apply flex items-center px-4 py-3 text-gray-600 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors;
-  }
-  .nav-item.active {
-    @apply bg-primary/10 text-primary font-medium;
-  }
-}
+@import '../assets/index.css';
 
-/* 引入外部资源的样式不会被scoped影响，保持原样 */
 </style>

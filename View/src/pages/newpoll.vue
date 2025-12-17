@@ -72,7 +72,7 @@
                     :class="{ 'opacity-70': vote.options.length > 2, 'opacity-50': vote.options.length <= 2 }"
                     @click="removeOption(index)"
                   >
-                    <i class="fa fa-trash-o"></i>
+                    <i class="fa fa-trash-o">×</i>
                   </button>
                 </div>
 
@@ -174,6 +174,19 @@
                 >
               </div>
 
+              <!-- 开始日期 -->
+              <div>
+                <label for="begin-date" class="block text-sm font-medium text-gray-700 mb-1">开始日期（可选）</label>
+                <input
+                  type="datetime-local"
+                  id="begin-date"
+                  v-model="vote.beginDate"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
+                  @change="updatePreview"
+                >
+                <p class="text-xs text-gray-500 mt-1">不设置则为永久有效</p>
+              </div>
+
               <!-- 截止日期 -->
               <div>
                 <label for="end-date" class="block text-sm font-medium text-gray-700 mb-1">截止日期（可选）</label>
@@ -217,65 +230,6 @@
             </div>
           </div>
 
-          <!-- 高级设置 -->
-          <div class="bg-white rounded-xl p-6 card-shadow hover-lift">
-            <button
-              id="advanced-settings-toggle"
-              class="flex justify-between items-center w-full text-left"
-              @click="advancedSettingsOpen = !advancedSettingsOpen"
-            >
-              <h2 class="text-lg font-semibold flex items-center">
-                <i class="fa fa-sliders text-primary mr-2"></i>
-                高级设置
-              </h2>
-              <i class="fa fa-chevron-down text-gray-400 transition-transform duration-300" :class="{ 'rotate-180': advancedSettingsOpen }"></i>
-            </button>
-
-            <div
-              id="advanced-settings-content"
-              class="mt-4 space-y-5"
-              v-if="advancedSettingsOpen"
-            >
-              <!-- 访问权限 -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">访问权限</label>
-                <select
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                  v-model="vote.accessPermission"
-                  @change="updatePasswordProtection"
-                >
-                  <option value="public">公开 - 任何人可见可参与</option>
-                  <option value="password">密码保护 - 需要密码才能参与</option>
-                  <option value="private">私密 - 仅邀请的人可见</option>
-                </select>
-              </div>
-
-              <!-- 密码保护 -->
-              <div id="password-protection-container" v-if="showPasswordProtection">
-                <label for="vote-password" class="block text-sm font-medium text-gray-700 mb-1">投票密码</label>
-                <input
-                  type="password"
-                  id="vote-password"
-                  v-model="vote.password"
-                  placeholder="设置访问密码"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                >
-              </div>
-
-              <!-- 结果可见性 -->
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">结果可见性</label>
-                <select
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all outline-none"
-                  v-model="vote.resultVisibility"
-                >
-                  <option value="always">始终可见 - 任何人随时可见结果</option>
-                  <option value="voted">投票后可见 - 只有参与投票后才能看到结果</option>
-                  <option value="closed">结束后可见 - 投票结束后才公开结果</option>
-                </select>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- 右侧：预览与操作 -->
@@ -319,35 +273,19 @@
 
               <div class="mt-4 text-center text-xs text-gray-500">
                 <p>投票规则: {{ preview.type === 'single' ? '单选投票' : `多选投票 (最多${preview.multipleLimit}项)` }}</p>
+                <p id="preview-begin-date" class="mt-1">{{ preview.beginDate ? `开始日期: ${formatDate(preview.beginDate)}` : '无开始日期' }}</p>
                 <p id="preview-end-date" class="mt-1">{{ preview.endDate ? `截止日期: ${formatDate(preview.endDate)}` : '无截止日期' }}</p>
               </div>
             </div>
 
             <!-- 操作按钮 -->
             <div class="mt-6 space-y-3">
-              <button
-                id="save-draft-btn"
-                class="w-full py-3 px-4 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors flex items-center justify-center"
-                @click="saveDraft"
-              >
-                <i class="fa fa-save mr-2"></i> 保存为草稿
-              </button>
 
               <button
                 id="publish-btn"
-                class="w-full py-3 px-4 bg-primary text-white rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
+                class="w-full py-3 px-4 bg-primary rounded-lg font-medium hover:bg-primary/90 transition-colors flex items-center justify-center shadow-md hover:shadow-lg"
                 @click="publishVote"
-              >
-                <i class="fa fa-paper-plane mr-2"></i> 发布投票
-              </button>
-
-              <button
-                id="preview-full-btn"
-                class="w-full py-2 px-4 text-primary hover:text-primary/80 text-sm font-medium transition-colors flex items-center justify-center"
-                @click="showFullPreview"
-              >
-                <i class="fa fa-expand mr-1"></i> 查看完整预览
-              </button>
+              >发布投票</button>
             </div>
           </div>
         </div>
@@ -392,247 +330,209 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      // 用户信息
-      userName: '张小明',
-      userAvatar: 'https://picsum.photos/id/64/200/200',
+<script setup lang="ts">
+import { ref, reactive,  onMounted, onBeforeUnmount, watch } from 'vue';
 
-      // 投票数据
-      vote: {
-        title: '',
-        description: '',
-        type: 'single', // single 或 multiple
-        multipleLimit: 2,
-        endDate: '',
-        isAnonymous: false,
-        allowRepeat: false,
-        accessPermission: 'public',
-        password: '',
-        resultVisibility: 'always',
-        options: [
-          { text: '', imageUrl: '' },
-          { text: '', imageUrl: '' }
-        ]
-      },
+// ====== 类型定义 ======
+interface VoteOption {
+  text: string;
+  imageUrl: string;
+}
 
-      // 预览数据
-      preview: {
-        title: '',
-        description: '',
-        type: 'single',
-        multipleLimit: 2,
-        endDate: '',
-        options: [
-          { text: '', imageUrl: '' },
-          { text: '', imageUrl: '' }
-        ]
-      },
+interface VoteData {
+  title: string;
+  description: string;
+  type: 'single' | 'multiple';
+  multipleLimit: number;
+  beginDate: string; // ISO string or empty
+  endDate: string; // ISO string or empty
+  isAnonymous: boolean;
+  allowRepeat: boolean;
+  accessPermission: 'public' | 'password';
+  password: string;
+  resultVisibility: 'always' | 'afterVote' | 'closed';
+  options: VoteOption[];
+}
 
-      // 状态管理
-      advancedSettingsOpen: false,
-      showPasswordProtection: false,
-      isScrolled: false,
-      showSuccessModal: false,
-      copied: false
+// ====== 响应式状态 ======
+const userName = ref('');
+const userAvatar = ref('');
+
+const vote = reactive<VoteData>({
+  title: '',
+  description: '',
+  type: 'single',
+  multipleLimit: 2,
+  beginDate: '',
+  endDate: '',
+  isAnonymous: false,
+  allowRepeat: false,
+  accessPermission: 'public',
+  password: '',
+  resultVisibility: 'always',
+  options: [
+    { text: '', imageUrl: '' },
+    { text: '', imageUrl: '' }
+  ]
+});
+
+const preview = reactive({
+  title: '',
+  description: '',
+  type: 'single' as 'single' | 'multiple',
+  multipleLimit: 2,
+  beginDate: '',
+  endDate: '',
+  options: [...vote.options] as VoteOption[]
+});
+
+const isScrolled = ref(false);
+const showSuccessModal = ref(false);
+const copied = ref(false);
+
+// ====== 方法 ======
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 10;
+};
+
+const addOption = () => {
+  vote.options.push({ text: '', imageUrl: '' });
+  updatePreview();
+};
+
+const removeOption = (index: number) => {
+  if (vote.options.length > 2) {
+    vote.options.splice(index, 1);
+    updatePreview();
+  }
+};
+
+const handleImageUpload = (event: Event, index: number) => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      vote.options[index].imageUrl = e.target?.result as string;
+      updatePreview();
     };
-  },
+    reader.readAsDataURL(file);
+    // 清空 input，以便下次选择相同文件也能触发 change
+    input.value = '';
+  }
+};
 
-  mounted() {
-    // 初始化预览
-    this.updatePreview();
+const removeImage = (index: number) => {
+  vote.options[index].imageUrl = '';
+  updatePreview();
+};
 
-    // 监听滚动事件
-    window.addEventListener('scroll', this.handleScroll);
-  },
 
-  beforeUnmount() {
-    // 移除滚动监听
-    window.removeEventListener('scroll', this.handleScroll);
-  },
+const updatePreview = () => {
+  preview.title = vote.title;
+  preview.description = vote.description;
+  preview.type = vote.type;
+  preview.multipleLimit = vote.multipleLimit;
+  preview.beginDate = vote.beginDate;
+  preview.endDate = vote.endDate;
+  preview.options = [...vote.options]; // 浅拷贝即可
+};
 
-  methods: {
-    // 处理滚动事件
-    handleScroll() {
-      this.isScrolled = window.scrollY > 10;
-    },
+const formatDate = (dateString: string) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
 
-    // 添加选项
-    addOption() {
-      this.vote.options.push({ text: '', imageUrl: '' });
-      this.updatePreview();
-    },
+const validateVote = (): boolean => {
+  if (!vote.title.trim()) {
+    alert('请输入投票标题');
+    return false;
+  }
 
-    // 移除选项
-    removeOption(index) {
-      if (this.vote.options.length > 2) {
-        this.vote.options.splice(index, 1);
-        this.updatePreview();
-      }
-    },
-
-    // 处理图片上传
-    handleImageUpload(event, index) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.vote.options[index].imageUrl = e.target.result;
-          this.updatePreview();
-        };
-        reader.readAsDataURL(file);
-      }
-    },
-
-    // 移除图片
-    removeImage(index) {
-      this.vote.options[index].imageUrl = '';
-      this.updatePreview();
-    },
-
-    // 更新密码保护显示状态
-    updatePasswordProtection() {
-      this.showPasswordProtection = this.vote.accessPermission === 'password';
-    },
-
-    // 更新预览
-    updatePreview() {
-      // 复制基本信息
-      this.preview.title = this.vote.title;
-      this.preview.description = this.vote.description;
-      this.preview.type = this.vote.type;
-      this.preview.multipleLimit = this.vote.multipleLimit;
-      this.preview.endDate = this.vote.endDate;
-
-      // 复制选项
-      this.preview.options = [...this.vote.options];
-    },
-
-    // 格式化日期显示
-    formatDate(dateString) {
-      if (!dateString) return '';
-      const date = new Date(dateString);
-      return date.toLocaleString('zh-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    },
-
-    // 保存草稿
-    saveDraft() {
-      // 简单验证
-      if (!this.validateVote()) return;
-
-      // 模拟保存API
-      console.log('保存草稿:', this.vote);
-      alert('草稿已保存');
-    },
-
-    // 发布投票
-    publishVote() {
-      // 验证投票信息
-      if (!this.validateVote()) return;
-
-      // 模拟发布API
-      console.log('发布投票:', this.vote);
-      this.showSuccessModal = true;
-    },
-
-    // 验证投票信息
-    validateVote() {
-      if (!this.vote.title.trim()) {
-        alert('请输入投票标题');
-        return false;
-      }
-
-      // 验证选项
-      for (let i = 0; i < this.vote.options.length; i++) {
-        if (!this.vote.options[i].text.trim()) {
-          alert(`请完善选项 ${i + 1} 的内容`);
-          return false;
-        }
-      }
-
-      // 验证密码（如果需要）
-      if (this.vote.accessPermission === 'password' && !this.vote.password.trim()) {
-        alert('请设置投票密码');
-        return false;
-      }
-
-      return true;
-    },
-
-    // 查看完整预览
-    showFullPreview() {
-      alert('完整预览功能即将上线');
-    },
-
-    // 复制投票链接
-    copyVoteLink() {
-      // 模拟链接复制
-      const dummyLink = 'https://votehub.example.com/v/abc123';
-      navigator.clipboard.writeText(dummyLink).then(() => {
-        this.copied = true;
-        setTimeout(() => {
-          this.copied = false;
-        }, 2000);
-      });
-    },
-
-    // 创建新投票
-    createNewVote() {
-      if (confirm('确定要创建新投票吗？当前内容将被清空。')) {
-        // 重置表单
-        this.vote = {
-          title: '',
-          description: '',
-          type: 'single',
-          multipleLimit: 2,
-          endDate: '',
-          isAnonymous: false,
-          allowRepeat: false,
-          accessPermission: 'public',
-          password: '',
-          resultVisibility: 'always',
-          options: [
-            { text: '', imageUrl: '' },
-            { text: '', imageUrl: '' }
-          ]
-        };
-
-        // 更新预览
-        this.updatePreview();
-
-        // 关闭弹窗
-        this.showSuccessModal = false;
-      }
+  for (let i = 0; i < vote.options.length; i++) {
+    if (!vote.options[i].text.trim()) {
+      alert(`请完善选项 ${i + 1} 的内容`);
+      return false;
     }
   }
 
+  if (vote.accessPermission === 'password' && !vote.password.trim()) {
+    alert('请设置投票密码');
+    return false;
+  }
+
+  return true;
 };
 
-// 示例的投票添加函数
-import axios from 'axios';
-import { ref } from 'vue';
-async function addVote() {
-      const res=await axios({
-      url: 'https://frp-six.com:11086/api/voting',
-      method: 'POST',
-      data: {
-        pollid: queryId.value,
-        optionid: selectedCandidate.value,
-      },
-  })
-  return res.data;
-}
+
+const publishVote = () => {
+  if (!validateVote()) return;
+  console.log('发布投票:', vote);
+  showSuccessModal.value = true;
+};
+
+const copyVoteLink = async () => {
+  const dummyLink = 'https://votehub.example.com/v/abc123';
+  try {
+    await navigator.clipboard.writeText(dummyLink);
+    copied.value = true;
+    setTimeout(() => (copied.value = false), 2000);
+  } catch (err) {
+    alert('复制失败，请手动复制链接');
+  }
+};
+
+const createNewVote = () => {
+  if (confirm('确定要创建新投票吗？当前内容将被清空。')) {
+    Object.assign(vote, {
+      title: '',
+      description: '',
+      type: 'single',
+      multipleLimit: 2,
+      beginDate: '',
+      endDate: '',
+      isAnonymous: false,
+      allowRepeat: false,
+      accessPermission: 'public',
+      password: '',
+      resultVisibility: 'always',
+      options: [
+        { text: '', imageUrl: '' },
+        { text: '', imageUrl: '' }
+      ]
+    });
+    updatePreview();
+    showSuccessModal.value = false;
+  }
+};
+
+// ====== 生命周期 & 监听 ======
+onMounted(() => {
+  updatePreview();
+  window.addEventListener('scroll', handleScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+// 可选：监听 vote 变化自动更新预览（避免漏调用）
+watch(
+  () => ({ ...vote }), // 深度监听（简化写法，实际可用 deep: true）
+  () => updatePreview(),
+  { deep: true }
+);
 </script>
 
 <style scoped>
+@import 'tailwindcss/tailwind.css';
 @layer utilities {
   .content-auto {
     content-visibility: auto;

@@ -2,22 +2,24 @@ import { defineStore } from 'pinia'
 
 export const userStore = defineStore('userStore',{
   actions:{
-    ChangeUserName(value:string){
+    ChangeUserIde(value:string){
       if(value&&value.length<10){
-        this.username+=value
+        this.userId+=value
       }
     }
   },
   getters:{
     getUserName():string{
-      return this.username.toUpperCase()
+      return this.userId.toUpperCase()
     }
   },
   state(){
     return {
-      username:"", //用户名
-      isFinited:false //是否登录
-
+      userId:"", //用户名
+      isFinited:false, //是否登录
+      AvatarUrl:"", //头像地址
+      userName:"", //昵称
+      userEmail:"", //邮箱
     }
   }
 })
