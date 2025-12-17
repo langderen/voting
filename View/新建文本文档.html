@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软工之星投票系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .vote-card {
+            transition: all 0.3s ease;
+        }
+        .vote-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        .photo-button {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            overflow: hidden;
+        }
+        .photo-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            transition: background 0.3s ease;
+        }
+        .photo-button:hover::before {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .button-content {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-vote-yea text-blue-600 text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">软工之星投票系统</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-600"><i class="fas fa-user mr-2"></i>当前用户</span>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-cog mr-2"></i>设置
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-2xl shadow-xl p-8 fade-in">
+            <!-- 页面标题 -->
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
+                    <i class="fas fa-star text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">23软工之星评选</h1>
+                <p class="text-xl text-gray-600 mb-2">为23软件工程选择你最喜欢的人物</p>
+                <div class="bg-blue-100 inline-flex items-center px-4 py-2 rounded-full">
+                    <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                    <span class="text-blue-700">项目编号：PROJ-2024-001</span>
+                </div>
+            </div>
+
+            <!-- 投票状态指示器 -->
+            <div id="voteStatus" class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                    <span class="text-green-700 font-medium">您尚未投票，请选择您支持的候选人</span>
+                </div>
+                <div class="text-sm text-gray-500">
+                    <i class="fas fa-clock mr-1"></i>
+                    投票截止：2024年12月31日
+                </div>
+            </div>
+
+            <!-- 候选人选择区域 -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">请选择候选人</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- 候选人1 -->
+                    <div class="vote-card bg-white border-2 border-gray-200 rounded-xl p-6 text-center cursor-pointer transition-all duration-300"
+                     onclick="selectCandidate(1)">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center text-white text-2xl font-bold">
+                        A
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">候选人A</h3>
+                    <p class="text-gray-600 mb-4">软件工程优秀学生代表</p>
+                    <div class="flex justify-center space-x-2 text-sm text-gray-500">
+                        <span><i class="fas fa-code mr-1"></i>前端开发</span>
+                    </div>
+                </div>
+
+                <!-- 候选人2 -->
+                <div class="vote-card bg-white border-2 border-gray-200 rounded-xl p-6 text-center cursor-pointer transition-all duration-300"
+                     onclick="selectCandidate(2)">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center text-white text-2xl font-bold">
+                        B
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">候选人B</h3>
+                    <p class="text-gray-600 mb-4">项目组织与管理专家</p>
+                    <div class="flex justify-center space-x-2 text-sm text-gray-500">
+                        <span><i class="fas fa-project-diagram mr-1"></i>项目管理</span>
+                    </div>
+                </div>
+
+                <!-- 候选人3 -->
+                <div class="vote-card bg-white border-2 border-gray-200 rounded-xl p-6 text-center cursor-pointer transition-all duration-300"
+                     onclick="selectCandidate(3)">
+                    <div class="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-r from-purple-400 to-purple-600 flex items-center justify-center text-white text-2xl font-bold">
+                        C
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">候选人C</h3>
+                    <p class="text-gray-600 mb-4">算法设计与优化能手</p>
+                    <div class="flex justify-center space-x-2 text-sm text-gray-500">
+                        <span><i class="fas fa-robot mr-1"></i>算法工程</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 投票按钮 - 带图片背景 -->
+        <div class="text-center">
+            <button id="submitBtn" onclick="submitVote()" 
+                    class="photo-button w-64 h-16 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                    style="background-image: url('https://picsum.photos/400/200?grayscale&blur=1">
+                <div class="button-content flex items-center justify-center text-white">
+                    <i class="fas fa-paper-plane mr-3"></i>
+                    <span id="submitText">提交投票</span>
+                </div>
+            </button>
+        </div>
+
+        <!-- 投票统计 -->
+        <div class="mt-12 bg-gray-50 rounded-xl p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">
+                <i class="fas fa-chart-bar mr-2"></i>当前投票统计
+            </h3>
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-blue-600" id="votesA">0</div>
+                    <div class="text-gray-600">候选人A</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-green-600" id="votesB">0</div>
+                    <div class="text-gray-600">候选人B</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-purple-600" id="votesC">0</div>
+                    <div class="text-gray-600">候选人C</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="text-gray-600 mb-4 md:mb-0">
+                <i class="fas fa-graduation-cap mr-2"></i>
+                23软件工程 - 软工之星评选活动
+            </div>
+            <div class="flex space-x-6 text-gray-500">
+                <a href="#" class="hover:text-blue-600 transition-colors"><i class="fas fa-info-circle mr-1"></i>关于</a>
+                <a href="#" class="hover:text-blue-600 transition-colors"><i class="fas fa-shield-alt mr-1"></i>隐私</a>
+                <a href="#" class="hover:text-blue-600 transition-colors"><i class="fas fa-envelope mr-1"></i>联系</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let selectedCandidate = null;
+        let hasVoted = localStorage.getItem('hasVoted');
+
+        // 初始化页面状态
+        function initializePage() {
+            if (hasVoted) {
+                updateVoteStatus(true);
+                loadVoteStatistics();
+            } else {
+                loadVoteStatistics();
+                // 初始禁用提交按钮
+                document.getElementById('submitBtn').disabled = true;
+            }
+        }
+
+        // 选择候选人
+        function selectCandidate(candidateId) {
+            if (hasVoted) return;
+            
+            selectedCandidate = candidateId;
+            
+            // 移除所有选中状态
+            document.querySelectorAll('.vote-card').forEach(card => {
+                card.classList.remove('selected');
+                card.classList.remove('border-blue-500');
+            });
+            
+            // 添加选中状态到当前选择的候选人
+            const selectedCard = document.querySelectorAll('.vote-card')[candidateId - 1];
+            selectedCard.classList.add('selected', 'border-blue-500');
+            
+            // 启用提交按钮
+            document.getElementById('submitBtn').disabled = false;
+        }
+
+        // 提交投票
+        function submitVote() {
+            if (!selectedCandidate || hasVoted) return;
+            
+            // 获取当前统计
+            let votesA = parseInt(localStorage.getItem('votesA') || '0');
+            let votesB = parseInt(localStorage.getItem('votesB') || '0');
+            let votesC = parseInt(localStorage.getItem('votesC') || '0');
+            
+            // 更新投票统计
+            if (selectedCandidate === 1) votesA++;
+            else if (selectedCandidate === 2) votesB++;
+            else if (selectedCandidate === 3) votesC++;
+            
+            // 保存到localStorage
+            localStorage.setItem('votesA', votesA.toString());
+            localStorage.setItem('votesB', votesB.toString());
+            localStorage.setItem('votesC', votesC.toString());
+            localStorage.setItem('hasVoted', 'true');
+            localStorage.setItem('votedFor', selectedCandidate.toString());
+            
+            hasVoted = true;
+            updateVoteStatus(true);
+            
+            // 显示成功消息
+            showSuccessMessage();
+        }
+
+        // 更新投票状态显示
+        function updateVoteStatus(voted) {
+            const statusDiv = document.getElementById('voteStatus');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = document.getElementById('submitText');
+            
+            if (voted) {
+                statusDiv.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                        <span class="text-green-700 font-medium">您已成功投票！感谢参与</span>
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        <i class="fas fa-user-check mr-1"></i>
+                        已投票给候选人${String.fromCharCode(64 + parseInt(localStorage.getItem('votedFor') || '1'))}
+                    </div>`;
+                statusDiv.className = 'bg-green-50 border border-green-200 rounded-lg p-4 mb-6 flex items-center justify-between';
+                
+                submitBtn.disabled = true;
+                submitText.innerHTML = '<i class="fas fa-check mr-2"></i>已投票';
+                
+                // 投票后更改按钮背景
+                submitBtn.style.backgroundImage = "url('https://picsum.photos/400/200?grayscale')";
+            }
+        }
+
+        // 加载投票统计
+        function loadVoteStatistics() {
+            document.getElementById('votesA').textContent = localStorage.getItem('votesA') || '0';
+            document.getElementById('votesB').textContent = localStorage.getItem('votesB') || '0';
+            document.getElementById('votesC').textContent = localStorage.getItem('votesC') || '0';
+        }
+
+        // 显示成功消息
+        function showSuccessMessage() {
+            const candidateName = String.fromCharCode(64 + selectedCandidate);
+            alert(`投票成功！您已投票给候选人${candidateName}。感谢您的参与！');
+            
+            // 重新加载统计
+            loadVoteStatistics();
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
+<code_end>
+
+这个投票系统实现了您要求的图片背景投票按钮，具有以下特点：
+
+1. **图片背景投票按钮**：使用CSS实现带半透明遮罩的图片背景按钮，悬停时有视觉反馈
+2. **响应式设计**：适配各种屏幕尺寸，移动端和桌面端都有良好体验
+3. **完整投票流程**：包含候选人选择、状态显示、投票提交和结果统计
+4. **数据持久化**：使用localStorage保存投票记录和统计信息
+5. **视觉美观**：采用现代化UI设计，包含渐变色彩、阴影效果和平滑过渡动画
+6. **交互友好**：提供清晰的状态提示和操作反馈
+
+按钮使用了灰调模糊的图片作为背景，并在悬停时通过半透明遮罩的变化提供视觉反馈，既美观又实用。

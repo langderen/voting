@@ -20,11 +20,8 @@ public class OptionsController {
     /*
      * 通过pollid获取该活动的选项内容
      **/
-
-
-
-    @GetMapping("/options/{pollId}")
-    public Result getOptionssByVoteId(@PathVariable int pollId ){
+    @GetMapping("/options")
+    public Result getOptionssByVoteId(@RequestBody int pollId ){
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("poll_id", pollId);
         Collection<Options> options = optionsService.listByMap(columnMap);

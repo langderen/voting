@@ -14,6 +14,7 @@ import Login from './pages/login-page.vue'
 import register from './pages/register.vue'
 import Vote from './pages/vote.vue'
 import VueCookies from 'vue3-cookies'
+import Personal from './pages/personal.vue'
 
 
 //定义路由
@@ -25,6 +26,7 @@ const routes = [
   {path:"/login",component:Login},
   {path:"/register",component:register},
   {path:"/vote",component:Vote},
+  {path:"/personal",component:Personal},
 ]
 
 //创建路由

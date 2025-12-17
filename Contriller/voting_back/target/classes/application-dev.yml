@@ -2,13 +2,18 @@ server:
   servlet:
     context-path: /api
   port: 8080
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/voting_system?useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-
+  servlet:
+    multipart:
+      enabled: true  # 开启文件上传（默认已开启）
+      max-file-size: 100MB  # 单个文件最大大小（支持 KB/MB/GB，如 50MB）
+      max-request-size: 200MB  # 单次请求总文件大小（需大于等于 max-file-size）
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
@@ -33,3 +38,6 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+
+upload:
+  path: D:/voting/images  # 替换为实际的文件上传路径

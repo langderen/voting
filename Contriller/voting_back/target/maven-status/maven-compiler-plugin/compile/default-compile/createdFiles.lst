@@ -2,6 +2,7 @@ com\example\voting_back\entity\Tags.class
 com\example\voting_back\entity\Comments.class
 com\example\voting_back\service\CommentsService.class
 com\example\voting_back\service\VotesService.class
+com\example\voting_back\controller\ImageUploadController.class
 com\example\voting_back\entity\User.class
 com\example\voting_back\service\impl\OptionsServiceImpl.class
 com\example\voting_back\common\Result.class
@@ -26,6 +27,7 @@ com\example\voting_back\entity\Votes.class
 com\example\voting_back\controller\PollController.class
 com\example\voting_back\controller\VotesController.class
 com\example\voting_back\mapper\UserMapper.class
+com\example\voting_back\controller\LoginController.class
 com\example\voting_back\service\impl\PollServiceImpl.class
 com\example\voting_back\mapper\OptionsMapper.class
 com\example\voting_back\service\impl\CommentsServiceImpl.class

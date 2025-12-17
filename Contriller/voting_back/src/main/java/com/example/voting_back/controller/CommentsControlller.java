@@ -1,5 +1,6 @@
 package com.example.voting_back.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.example.voting_back.common.Result;
 import com.example.voting_back.entity.Comments;
 import com.example.voting_back.entity.Poll;
@@ -18,14 +19,14 @@ public class CommentsControlller {
     private CommentsService commentsService;
     /*
     通过id获取该活动下的评论*/
-    @GetMapping("/{id}")
-    public Result getCommentById(@PathVariable Long id){
+    @GetMapping()
+    public Result getCommentById(@RequestBody Long id){
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("poll_id", id);
         Collection<Comments> comments = commentsService.listByMap(columnMap);
         return Result.success(comments);
     }
-
+    @SaCheckLogin
     @PostMapping
     public Result addComment(@RequestBody Comments comments){
 

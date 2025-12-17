@@ -1,5 +1,3 @@
-<script setup lang="ts">
-</script>
 <!--首页-->
 <template>
     <div class="container">
@@ -12,32 +10,38 @@
 
             <div >
               <ul v-infinite-scroll="load" class="assignment-grid" style="overflow: auto">
-                <!-- 作业卡片1 -->
-                 <RouterLink to="/vote?id=1" class="assignment-card-link"  >
-                  <div class="assignment-card">
-
-                      <div class="assignment-info">
-                          <h3>2025软工之星</h3>
-                          <div class="assignment-meta">
-                              <span>截止: 2025/12/31</span>
-                              <span>发布者：班长</span>
+                  <div v-for="card in cards" :key="card.pollId">
+                    <RouterLink :to="`/vote?id=${card.pollId}`" class="assignment-card-link"  >
+                      <div class="assignment-card">
+                          <div class="assignment-info">
+                              <h3>{{card.title}}</h3>
+                              <div class="assignment-meta">
+                                  <span>截止: {{card.endTime}}</span>
+                                  <span>发布者：{{card.creatorId}}</span>
+                              </div>
+                              <div>
+                                  <span class="assignment-tag tag-voting">{{card.status}}</span>
+                              </div>
+                              <p>第一名：{{card.firstPlace}}</p>
+                              <p>第二名：{{card.secondPlace}}</p>
+                              <p>第三名：{{card.thirdPlace}}</p>
                           </div>
-                          <div>
-                              <span class="assignment-tag tag-voting">进行中</span>
-                          </div>
-                          <p>第一名：deai</p>
-                          <p>第二名：小deai</p>
-                          <p>第三名：小小deai</p>
-                      </div>
-                    </div>
-                  </RouterLink>
-
-
+                        </div>
+                      </RouterLink>
+                  </div>
+                  <div v-if="cards.length==0 && !loading" class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>暂无投票数据</p>
+                  </div>
                 </ul>
               </div>
+
         </div>
       </section>
     </div>
+    <h3>{{ pageNum }}</h3>
+
+
 
   <el-backtop :right="100" :bottom="100" style="color: #4a6bff"/>
 
@@ -45,10 +49,34 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, reactive, ref, toRef } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
+//路由传参
+const route = useRoute()
+
+//传参解析
+const pageNum = computed(() => {
+  const page = route.query.pageNum;
+  return page ? parseInt(page) : 1;
+});
 
 const count = ref(0)
 const load = () => {
   count.value += 2
+}
+const cards = reactive<Array<any>>([]);
+getList().then((res) => {
+  console.log(res);
+  cards.splice(0, cards.length, ...res); // 清空并替换内容
+});
+const loading = ref(false)
+
+async function getList() {
+  const res=await axios({
+    url: 'https://frp-six.com:11086/api/poll/voteslist?pageNum=' + pageNum.value,
+    method: 'GET',
+  })
+  return res.data.data;
 }
 </script>
