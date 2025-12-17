@@ -123,6 +123,35 @@
           </div>
         </div>
       </transition>
+
+      <!-- 评论区 -->
+      <div class="mt-8 bg-white rounded-xl p-6 comments-section">
+        <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">发表评论</h3>
+        <div class="mb-4">
+          <textarea v-model="newComment" placeholder="写下你的评论..." class="w-full p-3 border rounded resize-none" rows="4" :disabled="isPosting"></textarea>
+        </div>
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-gray-500">支持文明交流，尊重他人。</div>
+          <div>
+            <button @click="postComment" :disabled="!newComment || isPosting" class="submit-btn">{{ isPosting ? '发布中...' : '发布评论' }}</button>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <h4 class="text-lg font-semibold mb-3">最新评论</h4>
+          <div v-if="comments.length === 0" class="text-gray-500">还没有评论，快来抢沙发！</div>
+          <div v-for="c in comments" :key="c.id || c._id || c.createdAt" class="border-b py-3">
+            <div class="flex items-start space-x-3">
+              <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-sm text-gray-600">{{ (c.user || '访客').slice(0,1) }}</div>
+              <div class="flex-1">
+                <div class="text-sm text-gray-700">{{ c.content }}</div>
+                <div class="text-xs text-gray-400 mt-1">{{ formatDate(c.createdAt) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
         </section>
@@ -135,7 +164,7 @@
 
 <script setup lang="ts">
 defineOptions({ name: 'VotePage' });
-import { ref, reactive, toRef, watchEffect } from 'vue';
+import { ref, reactive, toRef, watchEffect, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 //路由传参
 const route=useRoute();
@@ -305,6 +334,63 @@ const closeModal = (): void => {
   showModal.value = false;
 };
 
+// 评论区状态与 API
+const comments = reactive<Array<any>>([]);
+const newComment = ref<string>('');
+const isPosting = ref<boolean>(false);
+
+async function loadComments() {
+  try {
+    const res = await axios({
+      url: 'https://frp-six.com:11086/api/comments?id=' + queryId.value,
+      method: 'GET',
+    });
+    console.log(res);
+    const data = res.data?.data || res.data || [];
+
+    comments.splice(0, comments.length, ...(Array.isArray(data) ? data : []));
+  } catch (e) {
+    console.error('加载评论失败', e);
+  }
+}
+
+async function postComment() {
+  if (!newComment.value || isPosting.value) return;
+  isPosting.value = true;
+  try {
+    const payload = {
+      pollId: queryId.value,
+      content: newComment.value,
+      user: '访客',
+      createdAt: new Date().toISOString(),
+    };
+    await axios({ url: 'https://frp-six.com:11086/api/comments', method: 'POST', data: payload });
+    // 本地追加以即时反馈
+    comments.unshift(payload);
+    newComment.value = '';
+    toast.value.message = '评论已发布';
+    toast.value.show = true;
+    setTimeout(() => (toast.value.show = false), 1500);
+  } catch (e) {
+    console.error('发布评论失败', e);
+    toast.value.message = '发布失败，请重试';
+    toast.value.show = true;
+    setTimeout(() => (toast.value.show = false), 1500);
+  } finally {
+    isPosting.value = false;
+  }
+}
+
+function formatDate(d: string | Date | undefined) {
+  if (!d) return '';
+  const dt = new Date(d);
+  return dt.toLocaleString();
+}
+
+onMounted(() => {
+  loadComments();
+});
+
 // Avatar interaction handlers
 function handleAvatarMove(e: MouseEvent) {
   const wrapper = e.currentTarget as HTMLElement;
@@ -430,5 +516,12 @@ function handleAvatarLeave(e: MouseEvent) {
   animation: spin 1s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* 评论区样式 */
+.comments-section textarea { min-height: 96px; max-height: 300px; }
+.comments-section .border-b { border-color: rgba(0,0,0,0.06); }
+.comments-section .w-10 { min-width: 40px; min-height: 40px; }
+.comments-section .text-sm { line-height: 1.4; }
+.comments-section button[disabled] { opacity: 0.6; cursor: not-allowed; }
 
 </style>
