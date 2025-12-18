@@ -94,7 +94,7 @@ if (!username.value && !password.value) {
         const safePassword = encodeURIComponent(password.value)
 
         try {
-            login(safeUsername,safePassword).then((res) => {
+            login(safeUsername,safePassword).then(async (res) => {
               console.log(res);
               if (res.code == "200" ) {
                   // 设置cookie
@@ -102,7 +102,17 @@ if (!username.value && !password.value) {
                   // 更新用户状态
                   user.userId=res.data.loginId;
                   user.isFinited = true;
-
+                      //获取完整用户信息（可选，如果你 store 里有更多字段）
+                  const userRes = await axios({
+                    url: `https://frp-six.com:11086/api/user?id=${user.userId}`,
+                    method: 'GET',
+                  });
+                  const userData = userRes.data.data;
+                  if (userData) {
+                    user.userName = userData.username;
+                    user.AvatarUrl = userData.avatarUrl;
+                    user.userEmail = userData.email;
+                  }
                   // 跳转到主页
                   alert('登录成功，欢迎用户：'+res.data.loginId);
                   router.push('/');

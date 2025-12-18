@@ -24,8 +24,6 @@
               <h3 class="mt-3 font-semibold">{{ userInfo.fullname }}</h3>
               <p class="text-sm text-gray-500 mt-1">{{ userInfo.email }}</p>
             </div>
-
-            <!-- (导航已移除：仅显示用户信息) -->
           </div>
         </div>
 
@@ -291,7 +289,7 @@
             <div class="flex justify-between items-center mb-6">
               <h2 class="text-lg font-semibold flex items-center">
                 <i class="fa fa-bar-chart text-primary mr-2"></i>
-                最近创建的投票
+                我创建的投票
               </h2>
               <a href="#" class="text-primary hover:text-primary/80 text-sm font-medium transition-colors">
                 查看全部
@@ -459,12 +457,6 @@ const saveProfile = () => {
   }, 3000);
   originalUserInfo.value = { ...userInfo.value };
 
-  // 可选：同步回 Pinia store
-  const store = userStore();
-  store.userId = userInfo.value.username;
-  store.userName = userInfo.value.fullname;
-  store.userEmail = userInfo.value.email;
-  // ...其他字段
 };
 
 const resetForm = () => {
@@ -491,7 +483,7 @@ const handleViewVote = (voteId: number) => {
 // ====== 生命周期 ======
 onMounted(() => {
   const user = userStore();
-
+  console.log('加载用户数据:', user.userName);
   // 初始化用户信息
   userInfo.value = {
     avatar: user.AvatarUrl || '',

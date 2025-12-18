@@ -142,7 +142,7 @@
           <div v-if="comments.length === 0" class="text-gray-500">还没有评论，快来抢沙发！</div>
           <div v-for="c in comments" :key="c.id || c._id || c.createdAt" class="border-b py-3">
             <div class="flex items-start space-x-3">
-              <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-sm text-gray-600">{{ (c.user || '访客').slice(0,1) }}</div>
+              <div class="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-sm text-gray-600">{{ (String(c.userId || "访客")).slice(0, 4) }}</div>
               <div class="flex-1">
                 <div class="text-sm text-gray-700">{{ c.content }}</div>
                 <div class="text-xs text-gray-400 mt-1">{{ formatDate(c.createdAt) }}</div>
@@ -186,6 +186,7 @@ const showModal = ref<boolean>(false);
 const isSubmitting = ref<boolean>(false);
 // 候选人数据
 import axios from 'axios';
+import { userStore } from '@/stores/user';
 
 const candidates=reactive<Array<any>>([]);
 getOptions().then((res)=>{
@@ -345,10 +346,11 @@ async function loadComments() {
       url: 'https://frp-six.com:11086/api/comments?id=' + queryId.value,
       method: 'GET',
     });
-    console.log(res);
+    console.log(res.data);
     const data = res.data?.data || res.data || [];
 
     comments.splice(0, comments.length, ...(Array.isArray(data) ? data : []));
+    //console.log(comments);
   } catch (e) {
     console.error('加载评论失败', e);
   }
@@ -361,8 +363,8 @@ async function postComment() {
     const payload = {
       pollId: queryId.value,
       content: newComment.value,
-      user: '访客',
-      createdAt: new Date().toISOString(),
+      userId: userStore().userId || '0',
+      //createdAt: new Date().toISOString(),
     };
     await axios({ url: 'https://frp-six.com:11086/api/comments', method: 'POST', data: payload });
     // 本地追加以即时反馈
@@ -373,7 +375,7 @@ async function postComment() {
     setTimeout(() => (toast.value.show = false), 1500);
   } catch (e) {
     console.error('发布评论失败', e);
-    toast.value.message = '发布失败，请重试';
+    toast.value.message = '发布失败，请登陆后重试';
     toast.value.show = true;
     setTimeout(() => (toast.value.show = false), 1500);
   } finally {

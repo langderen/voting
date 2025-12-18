@@ -83,6 +83,7 @@ import { userStore } from '@/stores/user';
 import axios from 'axios';
 import { ElDropdown, ElDropdownMenu, ElDropdownItem, ElAvatar } from 'element-plus';
 import { getCurrentInstance } from 'vue';
+import router from './router';
 
 const instance = getCurrentInstance();
 type CookieProxy = {

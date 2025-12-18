@@ -1,25 +1,48 @@
+// src/stores/user.ts
 import { defineStore } from 'pinia'
 
-export const userStore = defineStore('userStore',{
-  actions:{
-    ChangeUserIde(value:string){
-      if(value&&value.length<10){
-        this.userId+=value
+// 1. 定义状态接口
+export interface UserState {
+  userId: string
+  userName: string
+  userEmail: string
+  AvatarUrl: string
+  isFinited: boolean
+}
+
+// 2. 使用对象式 state（而非函数），并显式标注类型
+export const userStore = defineStore('user', {
+  // ✅ 启用持久化（v3 写法）
+  persist: true, // 最简：整个 state 持久化到 localStorage
+
+
+  // ✅ 使用对象字面量 + 断言，确保类型推导
+  state: (): UserState => ({
+    userId: '',
+    userName: '',
+    userEmail: '',
+    AvatarUrl: '',
+    isFinited: false
+  }),
+
+  getters: {
+    getUserName(state): string {
+      return state.userName || state.userId.toUpperCase()
+    }
+  },
+
+  actions: {
+    setUserId(value: string) {
+      if (value?.trim()) {
+        this.userId = value.trim()
       }
-    }
-  },
-  getters:{
-    getUserName():string{
-      return this.userId.toUpperCase()
-    }
-  },
-  state(){
-    return {
-      userId:"", //用户名
-      isFinited:false, //是否登录
-      AvatarUrl:"", //头像地址
-      userName:"", //昵称
-      userEmail:"", //邮箱
+    },
+    setUser(data: Partial<UserState>) {
+      Object.assign(this, data)
+      this.isFinited = true
+    },
+    clearUser() {
+      this.$reset() // 👈 Pinia 内置方法，重置为初始 state
     }
   }
 })
