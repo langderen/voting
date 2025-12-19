@@ -38,7 +38,13 @@
         </div>
       </section>
     </div>
-    <h3>{{ pageNum }}</h3>
+        <el-pagination align="center" class="pagination"
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    :current-page="pageNum"
+    :page-size="pageSize"
+    layout="prev, pager, next, jumper"
+    :total="35"></el-pagination>
 
 
 
@@ -48,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref, toRef } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 //路由传参
@@ -78,4 +84,30 @@ async function getList() {
   })
   return res.data.data;
 }
+
+// 响应式数据
+const currentPage = ref(1)
+const pageSize = ref(12) // 默认每页12条
+
+// 每页条数改变时触发
+const handleSizeChange = (val) => {
+  console.log(`每页 ${val} 条`)
+  currentPage.value = cards.length / val
+  pageSize.value = val
+}
+
+// 当前页改变时触发
+const handleCurrentChange = (val) => {
+  console.log(`当前页: ${val}`)
+  currentPage.value = val
+  //跳转页面
+  window.location.href = `/home?pageNum=${val}`;
+}
 </script>
+<style scoped>
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+</style>
