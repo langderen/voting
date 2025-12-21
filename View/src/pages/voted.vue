@@ -21,9 +21,6 @@
                               <div>
                                   <span class="assignment-tag tag-voted">{{card.status}}</span>
                               </div>
-                              <p>第一名：{{card.firstPlace}}</p>
-                              <p>第二名：{{card.secondPlace}}</p>
-                              <p>第三名：{{card.thirdPlace}}</p>
                           </div>
                         </div>
                       </RouterLink>
