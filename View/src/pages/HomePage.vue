@@ -66,7 +66,6 @@ const load = () => {
 }
 const cards = reactive<Array<any>>([]);
 getList().then((res) => {
-  console.log(res);
   cards.splice(0, cards.length, ...res); // 清空并替换内容
 });
 const loading = ref(false)

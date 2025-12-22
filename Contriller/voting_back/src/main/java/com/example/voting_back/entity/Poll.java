@@ -1,19 +1,20 @@
 package com.example.voting_back.entity;
 
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 @TableName("polls")
 public class Poll {
-    @TableId
-    @TableField(value = "poll_id",fill= FieldFill.INSERT)
+    @TableId(value = "poll_id", type = IdType.AUTO)
     private Integer pollId;
     @TableField("title")
     private String title;

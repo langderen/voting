@@ -1,14 +1,21 @@
 package com.example.voting_back.controller;
 
-import com.example.voting_back.common.Result;
-import com.example.voting_back.entity.Options;
-import com.example.voting_back.service.OptionsService;
-import jakarta.annotation.Resource;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.voting_back.common.Result;
+import com.example.voting_back.entity.Options;
+import com.example.voting_back.service.OptionsService;
+
+import jakarta.annotation.Resource;
 
 @RestController
 @RequestMapping("/options")
@@ -20,8 +27,8 @@ public class OptionsController {
     /*
      * 通过pollid获取该活动的选项内容
      **/
-    @GetMapping("/options")
-    public Result getOptionssByVoteId(@RequestBody int pollId ){
+    @GetMapping()
+    public Result getOptionssByVoteId(@RequestParam int pollId ){
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("poll_id", pollId);
         Collection<Options> options = optionsService.listByMap(columnMap);

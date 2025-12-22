@@ -331,8 +331,9 @@
 </template>
 
 <script setup lang="ts">
+import { userStore } from '@/stores/user';
+import axios from 'axios';
 import { ref, reactive,  onMounted, onBeforeUnmount, watch } from 'vue';
-
 // ====== 类型定义 ======
 interface VoteOption {
   text: string;
@@ -355,8 +356,7 @@ interface VoteData {
 }
 
 // ====== 响应式状态 ======
-const userName = ref('');
-const userAvatar = ref('');
+const user=userStore();
 
 const vote = reactive<VoteData>({
   title: '',
@@ -472,14 +472,43 @@ const validateVote = (): boolean => {
 };
 
 
-const publishVote = () => {
+const publishVote = async () => {
   if (!validateVote()) return;
-  console.log('发布投票:', vote);
+  const res=await axios({
+      url: 'https://frp-six.com:11086/api/poll',
+      method: 'POST',
+      data: {
+            "title": vote.title,
+            "description": vote.description,
+            "creatorId": user.userId,
+            "startTime": vote.beginDate,
+            "endTime": vote.endDate,
+            "isPublic": vote.accessPermission==='public'?true:false,
+            "isAnonymous": vote.isAnonymous,
+            "allowMultiple": vote.type==="multiple"?true:false,
+            "maxChoice": vote.type==="multiple"?vote.multipleLimit:1,
+            "status": vote.beginDate && new Date(vote.beginDate) > new Date() ? 'closed' : 'active',
+      },
+
+  })
+  console.log('创建投票返回:', res.data);
+  for(let i=0;i<vote.options.length;i++){
+    await axios({
+      url: 'https://frp-six.com:11086/api/options',
+      method: 'POST',
+      data: {
+            "pollId": res.data.data.pollId,
+            "optionText": vote.options[i].text,
+            "imageUrl": vote.options[i].imageUrl,
+            "count": 0
+      },
+  })
+  }
   showSuccessModal.value = true;
 };
 
 const copyVoteLink = async () => {
-  const dummyLink = 'https://votehub.example.com/v/abc123';
+  const dummyLink = 'https://frp-six.com:11086/api/vote?id=';
   try {
     await navigator.clipboard.writeText(dummyLink);
     copied.value = true;

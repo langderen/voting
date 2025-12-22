@@ -36,12 +36,12 @@
       </section>
     </div>
         <el-pagination align="center" class="pagination"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-    :current-page="pageNum"
-    :page-size="pageSize"
-    layout="prev, pager, next, jumper"
-    :total="35"></el-pagination>
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNum"
+          :page-size="pageSize"
+          layout="prev, pager, next, jumper"
+          :total="11"></el-pagination>
 
 
 
@@ -88,7 +88,6 @@ const pageSize = ref(12) // 默认每页12条
 
 // 每页条数改变时触发
 const handleSizeChange = (val) => {
-  console.log(`每页 ${val} 条`)
   currentPage.value = cards.length / val
   pageSize.value = val
 }
@@ -98,7 +97,7 @@ const handleCurrentChange = (val) => {
   console.log(`当前页: ${val}`)
   currentPage.value = val
   //跳转页面
-  window.location.href = `/home?pageNum=${val}`;
+  window.location.href = `/voted?pageNum=${val}`;
 }
 </script>
 <style scoped>

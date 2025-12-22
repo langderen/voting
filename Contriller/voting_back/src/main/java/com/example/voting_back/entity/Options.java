@@ -1,14 +1,14 @@
 package com.example.voting_back.entity;
-import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import lombok.Data;
 @TableName("poll_options")
 @Data
 public class Options {
-    @TableId
-    @TableField(value = "option_id",fill= FieldFill.INSERT)
+    @TableId(value = "option_id", type = IdType.AUTO)
     private Integer optionId;
     @TableField("poll_id")
     private Integer pollId;

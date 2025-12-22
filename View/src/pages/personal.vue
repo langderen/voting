@@ -29,53 +29,7 @@
 
         <!-- 右侧：主内容区域 -->
         <div class="lg:col-span-3 space-y-6">
-          <!-- 统计卡片 -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="stat-card">
-              <div class="flex items-start justify-between">
-                <div>
-                  <p class="text-gray-500 text-sm">创建的投票</p>
-                  <h3 class="text-2xl font-bold mt-1">{{ stats.createdVotes }}</h3>
-                  <p class="text-success text-xs mt-2 flex items-center">
-                    <i class="fa fa-arrow-up mr-1"></i> 较上月增长 {{ stats.createdVotesGrowth }} 个
-                  </p>
-                </div>
-                <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <i class="fa fa-pencil"></i>
-                </div>
-              </div>
-            </div>
 
-            <div class="stat-card">
-              <div class="flex items-start justify-between">
-                <div>
-                  <p class="text-gray-500 text-sm">参与的投票</p>
-                  <h3 class="text-2xl font-bold mt-1">{{ stats.participatedVotes }}</h3>
-                  <p class="text-success text-xs mt-2 flex items-center">
-                    <i class="fa fa-arrow-up mr-1"></i> 较上月增长 {{ stats.participatedVotesGrowth }} 个
-                  </p>
-                </div>
-                <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
-                  <i class="fa fa-check-circle"></i>
-                </div>
-              </div>
-            </div>
-
-            <div class="stat-card">
-              <div class="flex items-start justify-between">
-                <div>
-                  <p class="text-gray-500 text-sm">总参与人数</p>
-                  <h3 class="text-2xl font-bold mt-1">{{ stats.totalParticipants }}</h3>
-                  <p class="text-success text-xs mt-2 flex items-center">
-                    <i class="fa fa-arrow-up mr-1"></i> 较上月增长 {{ stats.totalParticipantsGrowth }} 人
-                  </p>
-                </div>
-                <div class="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center text-warning">
-                  <i class="fa fa-users"></i>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <!-- 快速创建投票 -->
           <div class="bg-white rounded-xl p-6 card-shadow hover-lift">
@@ -454,7 +408,7 @@ const saveProfile = () => {
   showSuccessToast.value = true;
   setTimeout(() => {
     showSuccessToast.value = false;
-  }, 3000);
+  }, 300);
   originalUserInfo.value = { ...userInfo.value };
 
 };
