@@ -112,7 +112,7 @@ root/
 
 ## ⚡ 快速开始<a id="section5"></a>
 
-### 1. 数据库准备
+### 1. 数据库准备<a id="section6"></a>
 
 1. 确保本地已安装 **MySQL 8.0+**。
 2. 创建一个新的数据库（推荐命名为 `voting_system`）。
@@ -124,7 +124,7 @@ source /path/to/models/vote.sql;
 
 ```
 
-### 2. 后端启动<a id="section6"></a>
+### 2. 后端启动<a id="section7"></a>
 
 1. 进入后端目录：`cd Contriller/voting_back`
 2. 修改配置文件：打开 `src/main/resources/application-dev.yml`，配置你的数据库账号密码。
@@ -148,7 +148,7 @@ mvn spring-boot:run
 
 后端默认运行在 `8080` 端口（或根据 yml 配置）。
 
-### 3. 前端启动<a id="section7"></a>
+### 3. 前端启动<a id="section8"></a>
 
 1. 进入前端目录：`cd View`
 2. 安装依赖：
@@ -169,7 +169,7 @@ npm run dev
 
 ---
 
-## ⚙️ 配置说明<a id="section8"></a>
+## ⚙️ 配置说明
 
 ### 跨域配置 (CORS)
 
