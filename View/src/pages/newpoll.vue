@@ -32,7 +32,7 @@
                 <p class="text-xs text-gray-500 mt-1">简洁明了的标题有助于获得更多参与</p>
               </div>
               <div>
-                <label for="vote-description" class="block text-sm font-medium text-gray-700 mb-1">投票描述（可选）</label>
+                <label for="vote-description" class="block text-sm font-medium text-gray-700 mb-1">投票描述</label>
                 <textarea
                   id="vote-description"
                   rows="3"
@@ -176,7 +176,7 @@
 
               <!-- 开始日期 -->
               <div>
-                <label for="begin-date" class="block text-sm font-medium text-gray-700 mb-1">开始日期（可选）</label>
+                <label for="begin-date" class="block text-sm font-medium text-gray-700 mb-1">开始日期</label>
                 <input
                   type="datetime-local"
                   id="begin-date"
@@ -189,7 +189,7 @@
 
               <!-- 截止日期 -->
               <div>
-                <label for="end-date" class="block text-sm font-medium text-gray-700 mb-1">截止日期（可选）</label>
+                <label for="end-date" class="block text-sm font-medium text-gray-700 mb-1">截止日期</label>
                 <input
                   type="datetime-local"
                   id="end-date"
@@ -493,7 +493,10 @@ const publishVote = async () => {
   })
   console.log('创建投票返回:', res.data);
   for(let i=0;i<vote.options.length;i++){
-    await axios({
+
+
+
+ await axios({
       url: 'https://frp-six.com:11086/api/options',
       method: 'POST',
       data: {

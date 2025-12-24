@@ -86,6 +86,8 @@ public class PollController {
         Collection<Poll> polls = pollService.listByMap(columnMap);
         return Result.success(polls);
     }
+
+    @SaIgnore
     @DeleteMapping()
     public Result deletePoll(@RequestParam Long id){
         return Result.success(pollService.removeById(id));

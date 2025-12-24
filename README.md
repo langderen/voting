@@ -1,84 +1,197 @@
-软工之星投票系统 - README 文档
-该项目是一个基于 Vue3 + TypeScript 开发的投票管理系统，核心功能包括用户登录 / 注册、投票列表展示、投票提交、历史投票查看及联系反馈，支持无限滚动加载和登录状态管理，界面简洁且交互流畅。
-一、项目概述
-1. 项目定位
-面向 “软件工程之星” 评选场景的轻量级投票管理系统，支持普通用户投票、查看投票进度，以及管理员管理投票项目（需配合后端接口实现完整功能）。
-2. 核心功能
-功能模块	具体内容
-用户认证	用户名 / 密码登录、新用户注册（含图形验证码验证）、登录状态 Cookie 存储（1 小时有效期）
-投票管理	进行中投票列表（无限滚动加载）、投票详情页（单选投票）、投票状态限制（1 年仅投 1 次）
-历史记录	已结束投票列表查看，展示往期投票排名结果
-辅助功能	回到顶部组件、联系表单（待对接提交接口）、输入内容 XSS 攻击防护
-二、技术栈
-1. 前端核心技术
-框架：Vue3（Composition API + <script setup> 语法糖）
-语言：TypeScript（类型安全，减少运行时错误）
-路由：Vue Router（实现页面跳转、路由传参）
-UI 组件：Element Plus（提供回到顶部、轮播图等组件）
-其他依赖：vue3-puzzle-vcode（注册图形验证码）、js-cookie（登录状态存储）
-三、目录结构（建议）
-plaintext
-src/
-├── components/       # 公共组件（如导航栏、页脚等，当前代码中未拆分，可按需补充）
-├── pages/            # 页面组件
-│   ├── Home.vue      # 首页（进行中投票列表）
-│   ├── Login.vue     # 登录页
-│   ├── Register.vue  # 注册页
-│   ├── Vote.vue      # 投票详情页
-│   ├── History.vue   # 已结束投票页
-│   └── Contact.vue   # 联系表单页
-├── stores/           # 状态管理（如userStore，存储用户名等信息）
-├── router/           # 路由配置（管理页面跳转规则）
-├── assets/           # 静态资源（轮播图图片等）
-└── main.ts           # 入口文件（初始化Vue实例、挂载路由等）
-四、关键页面说明
-1. 首页（Home.vue）
-功能：展示 “进行中” 的投票项目，支持无限滚动加载（每次加载 2 个投票卡片）。
-核心逻辑：通过 v-infinite-scroll 指令触发 load 方法，累加 count 控制加载数量；点击投票卡片通过 RouterLink 跳转到投票详情页（携带投票 ID：/vote?id=1）。
-2. 登录页（Login.vue）
-功能：用户输入用户名 / 密码登录，包含输入验证和 XSS 防护。
-核心逻辑：
-用 v-model 绑定表单数据，@input 触发 validateInput 验证表单完整性（用户名和密码均不为空时按钮可点击）。
-登录时通过正则 /(~|\{|\}|"|'|<|>|\?)/g 过滤非法字符，避免 XSS 攻击；登录成功后用 Cookie 存储用户名（1 小时有效期），并跳转到首页。
-3. 投票详情页（Vote.vue）
-功能：展示投票项目信息、候选人选项，限制用户重复投票。
-核心逻辑：
-通过 useRoute 获取路由参数 id（投票项目 ID）。
-用 v-model 绑定用户选择的候选人；点击 “提交” 按钮时，用 Cookie 存储投票记录（键为投票 ID，值为候选人编号，有效期 1 年），刷新页面后按钮显示 “已投票” 并禁用。
-4. 注册页（Register.vue）
-功能：新用户注册，包含图形验证码验证。
-核心逻辑：点击 “立即注册” 弹出 vue3-puzzle-vcode 验证码组件，验证成功后可提交注册信息（当前仅打印日志，需对接后端接口实现真实注册）。
-五、环境配置与启动
-1. 依赖安装
-bash
-# 初始化项目（若未初始化）
-npm init vue@latest
+# 🗳️ 软工之星投票系统 (Voting System Full-Stack)
 
-# 安装核心依赖
-npm install vue-router@4 element-plus vue3-puzzle-vcode js-cookie
-npm install typescript @vitejs/plugin-vue-jsx -D
-2. 启动项目
-bash
-# 开发环境启动（默认端口3000，可在vite.config.ts中修改）
+这是一个基于 **Vue 3 + TypeScript** 前端与 **Spring Boot 3** 后端的全栈投票管理系统。项目专为“软件工程之星”评选场景设计，实现了用户认证、投票管理、数据可视化及评论互动等核心功能。
+
+## 📚 目录
+
+* [项目概述](https://www.google.com/search?q=%23-%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0)
+* [技术栈](https://www.google.com/search?q=%23-%E6%8A%80%E6%9C%AF%E6%A0%88)
+* [功能特性](https://www.google.com/search?q=%23-%E5%8A%9F%E8%83%BD%E7%89%B9%E6%80%A7)
+* [项目结构](https://www.google.com/search?q=%23-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84)
+* [快速开始](https://www.google.com/search?q=%23-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
+* [1. 数据库准备](https://www.google.com/search?q=%231-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%86%E5%A4%87)
+* [2. 后端启动](https://www.google.com/search?q=%232-%E5%90%8E%E7%AB%AF%E5%90%AF%E5%8A%A8)
+* [3. 前端启动](https://www.google.com/search?q=%233-%E5%89%8D%E7%AB%AF%E5%90%AF%E5%8A%A8)
+
+
+* [配置说明](https://www.google.com/search?q=%23-%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E)
+
+---
+
+## 🚀 项目概述
+
+本项目采用前后端分离架构。前端通过 Axios 与后端 RESTful API 进行交互，后端采用 Sa-Token 进行权限认证，并使用 MyBatis-Plus 操作 MySQL 数据库。系统支持普通用户参与投票、评论，以及管理员对投票项目、选项和用户的管理。
+
+---
+
+## 🛠 技术栈
+
+### 🎨 前端 (View)
+
+| 技术 | 说明 |
+| --- | --- |
+| **Framework** | Vue 3.5 (Composition API + Setup) |
+| **Build Tool** | Vite 7 |
+| **Language** | TypeScript |
+| **UI Library** | Element Plus + TailwindCSS |
+| **State Mgmt** | Pinia (含持久化插件) |
+| **Visualization** | ECharts 6 (数据图表展示) |
+| **Router** | Vue Router 4 |
+| **HTTP** | Axios |
+
+### ☕ 后端 (Contriller/voting_back)
+
+| 技术 | 说明 |
+| --- | --- |
+| **Framework** | Spring Boot 3.5.x |
+| **ORM** | MyBatis-Plus 3.5.14 |
+| **Database** | MySQL 8.0 |
+| **Auth** | Sa-Token 1.44 (轻量级权限认证) |
+| **Utils** | Hutool 5.8, Lombok |
+
+---
+
+## ✨ 功能特性
+
+### 👤 用户模块
+
+* **注册/登录**：支持图形验证码校验 (`vue3-puzzle-vcode`)，密码加密存储。
+* **权限管理**：基于 Sa-Token 的用户/管理员角色区分。
+* **个人中心**：用户头像上传、基本信息修改。
+
+### 🗳️ 投票核心
+
+* **投票展示**：无限滚动加载投票列表，支持搜索与筛选。
+* **投票逻辑**：
+* 支持单选/多选。
+* 匿名/实名投票配置。
+* 投票时间范围限制 (Start/End Time)。
+* 防重复投票机制。
+
+
+* **结果分析**：使用 ECharts 展示投票结果统计图表。
+
+### 💬 互动模块
+
+* **评论系统**：支持对投票项目进行评论（嵌套/楼层结构）。
+* **图片上传**：支持投票选项及用户头像的图片上传 (`ImageUploadController`)。
+* **标签分类**：支持多标签关联投票项目。
+
+---
+
+## 📂 项目结构
+
+```text
+root/
+├── models/                # 数据库脚本
+│   └── vote.sql           # 初始化 SQL 文件
+├── Contriller/            # 后端代码根目录
+│   └── voting_back/       # Spring Boot 项目
+│       ├── src/main/java/com/example/voting_back/
+│       │   ├── controller/  # 控制层 (API 接口)
+│       │   ├── entity/      # 实体类 (对应 DB 表)
+│       │   ├── mapper/      # DAO 层 (MyBatis-Plus)
+│       │   ├── service/     # 业务逻辑层
+│       │   └── config/      # 配置类 (Sa-Token, Cors, etc.)
+│       └── src/main/resources/
+│           ├── application.yml      # 主配置
+│           └── application-dev.yml  # 开发环境配置 (数据库连接等)
+└── View/                  # 前端代码根目录
+    ├── src/
+    │   ├── api/           # Axios 请求封装
+    │   ├── assets/        # 静态资源 (CSS, Images)
+    │   ├── components/    # 公共组件
+    │   ├── pages/         # 页面视图 (Home, Vote, Login...)
+    │   ├── router/        # 路由配置
+    │   └── stores/        # Pinia 状态管理
+    └── vite.config.ts     # Vite 配置
+
+```
+
+---
+
+## ⚡ 快速开始
+
+### 1. 数据库准备
+
+1. 确保本地已安装 **MySQL 8.0+**。
+2. 创建一个新的数据库（推荐命名为 `voting_system`）。
+3. 执行 `models/vote.sql` 脚本，初始化表结构（`users`, `polls`, `options`, `votes`, `comments` 等）。
+
+```sql
+-- 登录 MySQL 后执行
+source /path/to/models/vote.sql;
+
+```
+
+### 2. 后端启动
+
+1. 进入后端目录：`cd Contriller/voting_back`
+2. 修改配置文件：打开 `src/main/resources/application-dev.yml`，配置你的数据库账号密码。
+```yaml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/voting_system?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    username: root  # 修改为你的用户名
+    password: 123456 # 修改为你的密码
+
+```
+
+
+3. 运行项目：
+```bash
+# 使用 Maven 运行
+mvn spring-boot:run
+
+```
+
+
+后端默认运行在 `8080` 端口（或根据 yml 配置）。
+
+### 3. 前端启动
+
+1. 进入前端目录：`cd View`
+2. 安装依赖：
+```bash
+npm install
+
+```
+
+
+3. 启动开发服务器：
+```bash
 npm run dev
-3. 打包部署
-bash
-# 构建生产环境代码（输出到dist目录）
-npm run build
 
-# 将dist目录下的文件部署到Nginx、Apache等服务器即可访问
-六、待完善功能
-后端接口对接：当前代码仅包含前端逻辑，需对接后端接口实现以下功能：
-登录 / 注册的真实数据校验（如用户名是否已存在、密码加密存储等）。
-投票数据的持久化（当前用 Cookie 存储，仅保存在本地，需同步到后端数据库）。
-联系表单的留言提交（Contact.vue 中的 sendmessage 方法未实现，需对接后端接口发送邮件或存储留言）。
-组件拆分：将页脚、导航栏等公共部分拆分为独立组件（如 Footer.vue、Navbar.vue），提高代码复用性。
-错误处理优化：登录 / 注册失败时的错误提示（如 “用户名或密码错误”）需对接后端返回信息，当前仅固定提示 “登录失败，请稍后重试”。
-响应式适配：当前代码未包含移动端适配样式，需补充媒体查询，确保在手机、平板等设备上正常显示。
-七、注意事项
-Cookie 安全：当前用明文存储用户名到 Cookie，生产环境中建议：
-后端生成 Token（如 JWT），前端存储 Token 而非明文用户名。
-配置 Cookie 的 httpOnly 和 secure 属性，防止 Cookie 被窃取。
-图片路径：轮播图图片路径为 /tu${item}.jfif，需确保图片文件放在 public 目录下（或修改路径为 @/assets/tu${item}.jfif，并将图片放入 src/assets）。
-依赖版本兼容：安装依赖时注意版本匹配（如 Vue3 需搭配 Vue Router4、Element Plus 最新版），避免因版本冲突导致功能异常。
-要不要我帮你补充一份 vite.config.ts 配置示例？包含端口设置、别名配置、Element Plus 自动导入等常用配置，可直接用于项目启动。
+```
+
+
+4. 访问浏览器：通常为 `http://localhost:5173`。
+
+---
+
+## ⚙️ 配置说明
+
+### 跨域配置 (CORS)
+
+后端已在 `config/CustomCorsFilter.java` 中配置了跨域策略，默认允许前端访问。如果前后端端口不一致，请确保 allowed-origins 包含前端地址。
+
+### 图片上传
+
+`ImageUploadController` 处理图片上传，请检查 `application.yml` 中关于文件存储路径的配置（如腾讯云 COS 或本地路径），确保上传目录有写入权限。
+
+### 权限认证
+
+项目使用 **Sa-Token**。
+
+* 前端请求头需携带 Token（名称通常为 `satoken` 或配置文件中指定的名称）。
+* 登录成功后，后端会返回 Token，前端需将其存储在 Cookie 或 LocalStorage 中。
+
+---
+
+## 🤝 贡献与反馈
+
+如果你发现任何 Bug 或有新功能建议，请提交 Issue 或 Pull Request。
+
+---
+
+*Created by Langderen | 2024*

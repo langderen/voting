@@ -71,7 +71,7 @@
               <button
                 @click="submitVote"
                 class="photo-button w-64 h-16 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed bg-cover bg-center relative overflow-hidden"
-                :disabled="!selectedCandidate || hasVoted || isSubmitting"
+                :disabled="!selectedCandidate || hasVoted || isSubmitting|| !status"
               >
                 <div class="button-content flex items-center justify-center text-white">
                   <i class="fas fa-paper-plane mr-3"></i>
@@ -390,12 +390,11 @@ const isSubmitting = ref<boolean>(false);
 import axios from 'axios';
 import { userStore } from '@/stores/user';
 
-const poll=reactive<any>({});
 const title=ref<string>('');
 const description=ref<string>('');
 const voteEndTime=ref<string>('');
+const status=ref<boolean>(false);
 getpoll();
-console.log(poll);
 
 // 向给定pollid的选项查询发起请求
 async function getOptions() {
@@ -413,9 +412,12 @@ async function getpoll() {
     url: 'https://frp-six.com:11086/api/poll/poll?pollId=' + queryId.value,
     method: 'GET',
   })
+
   title.value=res.data.data["0"].title;
   description.value=res.data.data["0"].description;
   voteEndTime.value=res.data.data["0"].endTime;
+  status.value=res.data.data["0"].status==="active"? true:false;
+  console.log(status.value);
   return res.data.data;
 }
 

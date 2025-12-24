@@ -10,20 +10,6 @@
 
             <div class="contact-form">
                 <form @submit.prevent="sendmessage">
-                    <div class="form-group">
-                        <label for="name">姓名</label>
-                        <input type="text" id="name" v-model="name" class="form-control" placeholder="请输入您的姓名" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">电子邮箱</label>
-                        <input type="email" id="email" v-model="email" class="form-control" placeholder="请输入您的电子邮箱" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="subject">主题</label>
-                        <input type="text" id="subject" v-model="subject" class="form-control" placeholder="请输入主题" required>
-                    </div>
 
                     <div class="form-group">
                         <label for="message">留言内容</label>
@@ -50,11 +36,9 @@ const message = ref('');
 
 const sendmessage = async () => {
   try {
-    await axios.post('https://frp-six.com:11086/api/comment', {
+    await axios.post('https://frp-six.com:11086/api/comments', {
       userId: user.userId,
-      name: name.value,
-      email: email.value,
-      subject: subject.value,
+      pollId:19736040,
       content: message.value
     });
     // clear form after send

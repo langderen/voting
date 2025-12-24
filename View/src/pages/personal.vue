@@ -193,16 +193,8 @@
                 </div>
 
                 <div class="mt-3 flex items-center justify-between">
-                  <div class="flex items-center space-x-4">
-                    <span class="text-sm flex items-center">
-                      <i class="fa fa-user-o mr-1 text-gray-400"></i>
-                      <span>{{ vote.participants }}人参与</span>
-                    </span>
-                    <span class="text-sm flex items-center">
-                      <i class="fa fa-list-ul mr-1 text-gray-400"></i>
-                      <span>{{ vote.options }}个选项</span>
-                    </span>
-                  </div>
+
+
 
                   <div class="flex space-x-2">
                     <button
@@ -265,16 +257,7 @@
                 </div>
 
                 <div class="mt-3 flex items-center justify-between">
-                  <div class="flex items-center space-x-4">
-                    <span class="text-sm flex items-center">
-                      <i class="fa fa-user-o mr-1 text-gray-400"></i>
-                      <span>{{ vote.participants }}人参与</span>
-                    </span>
-                    <span class="text-sm flex items-center">
-                      <i class="fa fa-list-ul mr-1 text-gray-400"></i>
-                      <span>{{ vote.options }}个选项</span>
-                    </span>
-                  </div>
+
 
                   <div class="flex space-x-2">
                     <button
@@ -282,15 +265,9 @@
                       v-if="vote.status === '进行中'"
                       @click="handleEditVote(vote.id)"
                     >
-                      <i class="fa fa-pencil mr-1"></i> 编辑
+                      <i class="fa fa-pencil mr-1"></i> 删除
                     </button>
-                    <button
-                      class="text-sm text-gray-600 hover:text-primary transition-colors"
-                      v-if="vote.status === '已结束'"
-                      @click="handleViewResults(vote.id)"
-                    >
-                      <i class="fa fa-bar-chart mr-1"></i> 结果
-                    </button>
+
                     <button
                       class="text-sm text-gray-600 hover:text-primary transition-colors"
                       @click="handleViewVote(vote.id)"
@@ -320,6 +297,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { userStore } from '@/stores/user';
+import axios from 'axios';
+import router from '@/router';
 
 // ====== 类型定义 ======
 interface UserInfo {
@@ -373,6 +352,23 @@ const stats = ref({
 
 const recentActivities = ref<Activity[]>([]);
 const recentVotes = ref<VoteItem[]>([]);
+async function getpolls() {
+  const res=await axios({
+    url: 'https://frp-six.com:11086/api/poll/getvote?creatorId=' + userStore().userId,
+    method: 'GET',
+  })
+  recentVotes.value = res.data.data.map((item: any) => ({
+    id: item.pollId,
+    title: item.title,
+    createdAt: item.createdAt,
+    status: item.status === 'active' ? '进行中' : '已结束',
+    statusClass: item.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800',
+    participants: item.participantCount || 0,
+  }));
+  return res.data.data;
+}
+getpolls();
+
 
 const voteQuery = ref('');
 const votePage = ref(1);
@@ -421,17 +417,17 @@ const handleAvatarUpload = () => {
   alert('头像上传功能待实现');
 };
 
+const handleEditVote = async (voteId: number) => {
+  await axios({
+w    url: 'https://frp-six.com:11086/api/poll' + voteId,
+    method: 'DELETE',
+  })
+};0
 
-const handleEditVote = (voteId: number) => {
-  console.log('编辑投票:', voteId);
-};
 
-const handleViewResults = (voteId: number) => {
-  console.log('查看投票结果:', voteId);
-};
 
 const handleViewVote = (voteId: number) => {
-  console.log('查看投票:', voteId);
+  location.href = `/vote?id=${voteId}`;
 };
 
 // ====== 生命周期 ======

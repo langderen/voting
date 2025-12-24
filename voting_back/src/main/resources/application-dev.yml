@@ -40,4 +40,4 @@ sa-token:
   is-log: true
 
 upload:
-  path: D:/voting/images  # 替换为实际的文件上传路径
+  path: D:\voting\voting\view\public  # 替换为实际的文件上传路径
