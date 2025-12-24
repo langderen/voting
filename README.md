@@ -4,27 +4,27 @@
 
 ## 📚 目录
 
-* [项目概述]
-* [技术栈]
-* [功能特性]
-* [项目结构]
-* [快速开始]
-* [1. 数据库准备]
-* [2. 后端启动]
-* [3. 前端启动]
+* [项目概述](#section1)
+* [技术栈](#section2)
+* [功能特性](#section3)
+* [项目结构](#section4)
+* [快速开始](#section5)
+* [1. 数据库准备](#section6)
+* [2. 后端启动](#section7)
+* [3. 前端启动](#section8)
 
 
-* [配置说明]
+* [配置说明](#section9)
 
 ---
 
-## 🚀 项目概述
+## 🚀 项目概述<a id="section1"></a>
 
 本项目采用前后端分离架构。前端通过 Axios 与后端 RESTful API 进行交互，后端采用 Sa-Token 进行权限认证，并使用 MyBatis-Plus 操作 MySQL 数据库。系统支持普通用户参与投票、评论，以及管理员对投票项目、选项和用户的管理。
 
 ---
 
-## 🛠 技术栈
+## 🛠 技术栈<a id="section2"></a>
 
 ### 🎨 前端 (View)
 
@@ -51,7 +51,7 @@
 
 ---
 
-## ✨ 功能特性
+## ✨ 功能特性<a id="section3"></a>
 
 ### 👤 用户模块
 
@@ -79,7 +79,7 @@
 
 ---
 
-## 📂 项目结构
+## 📂 项目结构<a id="section4"></a>
 
 ```text
 root/
@@ -110,7 +110,7 @@ root/
 
 ---
 
-## ⚡ 快速开始
+## ⚡ 快速开始<a id="section5"></a>
 
 ### 1. 数据库准备
 
@@ -124,7 +124,7 @@ source /path/to/models/vote.sql;
 
 ```
 
-### 2. 后端启动
+### 2. 后端启动<a id="section6"></a>
 
 1. 进入后端目录：`cd Contriller/voting_back`
 2. 修改配置文件：打开 `src/main/resources/application-dev.yml`，配置你的数据库账号密码。
@@ -148,7 +148,7 @@ mvn spring-boot:run
 
 后端默认运行在 `8080` 端口（或根据 yml 配置）。
 
-### 3. 前端启动
+### 3. 前端启动<a id="section7"></a>
 
 1. 进入前端目录：`cd View`
 2. 安装依赖：
@@ -169,7 +169,7 @@ npm run dev
 
 ---
 
-## ⚙️ 配置说明
+## ⚙️ 配置说明<a id="section8"></a>
 
 ### 跨域配置 (CORS)
 
@@ -188,7 +188,7 @@ npm run dev
 
 ---
 
-## 🤝 贡献与反馈
+## 🤝 贡献与反馈<a id="section9"></a>
 
 如果你发现任何 Bug 或有新功能建议，请提交 Issue 或 Pull Request。
 
