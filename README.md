@@ -4,17 +4,17 @@
 
 ## 📚 目录
 
-* [项目概述](https://www.google.com/search?q=%23-%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0)
-* [技术栈](https://www.google.com/search?q=%23-%E6%8A%80%E6%9C%AF%E6%A0%88)
-* [功能特性](https://www.google.com/search?q=%23-%E5%8A%9F%E8%83%BD%E7%89%B9%E6%80%A7)
-* [项目结构](https://www.google.com/search?q=%23-%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84)
-* [快速开始](https://www.google.com/search?q=%23-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B)
-* [1. 数据库准备](https://www.google.com/search?q=%231-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%87%86%E5%A4%87)
-* [2. 后端启动](https://www.google.com/search?q=%232-%E5%90%8E%E7%AB%AF%E5%90%AF%E5%8A%A8)
-* [3. 前端启动](https://www.google.com/search?q=%233-%E5%89%8D%E7%AB%AF%E5%90%AF%E5%8A%A8)
+* [项目概述]
+* [技术栈]
+* [功能特性]
+* [项目结构]
+* [快速开始]
+* [1. 数据库准备]
+* [2. 后端启动]
+* [3. 前端启动]
 
 
-* [配置说明](https://www.google.com/search?q=%23-%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E)
+* [配置说明
 
 ---
 
