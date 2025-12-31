@@ -42,12 +42,15 @@
 	</dependencyManagement>
 
 	<dependencies>
+<<<<<<< HEAD
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+=======
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>

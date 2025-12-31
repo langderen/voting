@@ -1,13 +1,19 @@
 package com.example.voting_back.config;
 
 import org.springframework.context.annotation.Bean;
+<<<<<<< HEAD
 import org.springframework.context.annotation.Configuration;
+=======
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
 
 import cn.dev33.satoken.fun.strategy.SaCorsHandleFunction;
 import cn.dev33.satoken.router.SaHttpMethod;
 import cn.dev33.satoken.router.SaRouter;
 
+<<<<<<< HEAD
 @Configuration
+=======
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
 public class CosConfig {
     /**
      * CORS 跨域处理策略

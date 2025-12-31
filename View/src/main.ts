@@ -2,6 +2,7 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import App from './App.vue'
 import  ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -14,6 +15,8 @@ import Login from './pages/login-page.vue'
 import register from './pages/register.vue'
 import Vote from './pages/vote.vue'
 import VueCookies from 'vue3-cookies'
+import Personal from './pages/personal.vue'
+import Newpolls from './pages/NewPoll.vue'
 
 
 //定义路由
@@ -25,6 +28,8 @@ const routes = [
   {path:"/login",component:Login},
   {path:"/register",component:register},
   {path:"/vote",component:Vote},
+  {path:"/personal",component:Personal},
+  {path:"/newpoll",component:Newpolls},
 ]
 
 //创建路由
@@ -39,7 +44,7 @@ const app = createApp(App)
 //Pinia配置
 
 const pinia = createPinia()
-
+pinia.use(piniaPluginPersistedstate);
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)

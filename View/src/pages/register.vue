@@ -45,9 +45,14 @@
 </template>
 
 <script setup lang="ts">
+import axios from 'axios';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+<<<<<<< HEAD
 import { api } from '@/utils/api';
+=======
+// 验证码组件，爆红也没事
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
 import Vcode from "vue3-puzzle-vcode";
 import { $message } from '@/utils/message';
 
@@ -68,6 +73,7 @@ const showToast = (message: string, type = 'success') => {
 }
 
 const handleRegister = () => {
+<<<<<<< HEAD
     const xssPattern = /(~|\{|\}|"|'|<|>|\?)/g
     if (!username.value || !email.value || !password.value || !confirmPassword.value) {
       $message.error('请填写完整的注册信息');
@@ -81,6 +87,24 @@ const handleRegister = () => {
     }else{
       onShow();
     }
+=======
+    // 本地简单校验
+    const xssPattern = /(~|\{|\}|"|'|<|>|\?)/g
+    if (!username.value || !email.value || !password.value || !confirmPassword.value) {
+      showToast('请填写完整的注册信息', 'error');
+      return;
+    }else if (xssPattern.test(username.value) || xssPattern.test(email.value) || xssPattern.test(password.value) || xssPattern.test(confirmPassword.value)) {
+        showToast('警告:输入内容包含非法字符', 'error');
+        return
+    }else if (password.value !== confirmPassword.value) {
+      showToast('两次输入的密码不一致', 'error');
+      return;
+    }else{
+      // 触发验证码弹窗，实际注册在 onSuccess 中执行
+      onShow();
+    }
+
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
 }
 
 
@@ -99,11 +123,17 @@ const handleRegister = () => {
   };
 
   const onSuccess = () => {
+<<<<<<< HEAD
     onClose();
+=======
+    onClose(); // 验证成功，需要手动关闭模态框
+    // 执行注册并反馈
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
     (async () => {
       try {
         const data = await addUser();
         if (data && (data.code === 0 || data.success || data.id || data.userId)) {
+<<<<<<< HEAD
           $message.success('注册成功，正在跳转到登录页');
           setTimeout(() => router.push('/login'), 1200);
         } else {
@@ -113,10 +143,23 @@ const handleRegister = () => {
       } catch (err: any) {
         const msg = err && err.response && err.response.data && err.response.data.message ? err.response.data.message : '注册失败,用户名或邮箱可能已被使用';
         $message.error(msg);
+=======
+          showToast('注册成功，正在跳转到登录页', 'success');
+          setTimeout(() => router.push('/login'), 1200);
+        } else {
+          // 允许后端返回消息字段
+          const msg = data && (data.message || data.msg) ? (data.message || data.msg) : '注册失败，请重试';
+          showToast(msg, 'error');
+        }
+      } catch (err: any) {
+        const msg = err && err.response && err.response.data && err.response.data.message ? err.response.data.message : '注册失败,用户名或邮箱可能已被使用';
+        showToast(msg, 'error');
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
       }
     })();
   };
   async function addUser() {
+<<<<<<< HEAD
     const res = await api.post('/user', {
       username: username.value,
       email: email.value,
@@ -125,5 +168,19 @@ const handleRegister = () => {
     });
     return res.data;
   }
+=======
+      const res=await axios({
+      url: 'https://frp-six.com:11086/api/user',
+      method: 'POST',
+      data: {
+        username: username.value,
+        email: email.value,
+        passwordHash: password.value,
+        createAt: new Date().toISOString(),
+      },
+  })
+  return res.data;
+}
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
 </script>
 

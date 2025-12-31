@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
+<<<<<<< HEAD
             "type": "java",
             "name": "VotingBackApplication",
             "request": "launch",
@@ -12,6 +13,8 @@
             "projectName": "voting_back"
         },
         {
+=======
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
             "type": "jdk",
             "request": "launch",
             "name": "启动 Java 应用程序"

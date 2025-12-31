@@ -19,9 +19,18 @@ public class ImageUploadController {
     @PostMapping("/upload")
     public String uploadImage(@RequestParam("file") MultipartFile file) {
         try {
+<<<<<<< HEAD
             String fileName = file.getOriginalFilename();
             File filePath = new File(uploadPath + "/" + fileName);
             file.transferTo(filePath);
+=======
+            // 获取文件名
+            String fileName = file.getOriginalFilename();
+            // 指定保存路径
+            String filePath = uploadPath + "/" + fileName;
+            // 保存文件到本地
+            file.transferTo(new File(filePath));
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
             return "上传成功";
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,6 +48,10 @@ public class ImageUploadController {
             @RequestParam("imageName")String imagename,
             HttpServletResponse responce
     ) throws IOException {
+<<<<<<< HEAD
+=======
+        File fileDir = new File(uploadPath);
+>>>>>>> fa984f56b7b38810be06736461290f51e4e4e0eb
         File image = new File(uploadPath + "/"+imagename);
         if (image.exists()) {
             FileInputStream fis = new FileInputStream(image);
